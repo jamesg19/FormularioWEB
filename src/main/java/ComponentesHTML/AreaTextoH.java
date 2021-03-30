@@ -15,7 +15,18 @@ public class AreaTextoH {
     private String Alineacion="";
     private String FORMATO="";
     private String Formulario="";
-    private String NombreCampo="";    
+    private String NombreCampo="";
+/**
+ * 
+ * @param TextoVisible
+ * @param Formulario
+ * @param Id
+ * @param Filas
+ * @param Columnas
+ * @param Requerido
+ * @param Alineacion
+ * @param NombreCampo 
+ */    
     public AreaTextoH(String TextoVisible,String Formulario, String Id, String Filas, String Columnas, String Requerido,String Alineacion, String NombreCampo) {
         this.TextoVisible=TextoVisible;
         this.Id=Id;
@@ -43,7 +54,11 @@ public class AreaTextoH {
         } else if(Alineacion.trim().equalsIgnoreCase("JUSTIFICAR")){
             setAlineacion("center");
             AlineacionJustificar();
-        }        
+        } 
+        else if(Alineacion.trim().equals(null)){
+            setAlineacion("center");
+            AlineacionCentar();
+        } 
     }
 //<div  class="row">
 //<div  class="col">

@@ -23,7 +23,7 @@ public class Verificar {
     ArrayList<Formulario> formularios;
     ArrayList<Componente> componentes;
     String usuarioLogueado;
-
+    String timeStamp = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
     public Verificar(ArrayList<Usuario> usuarios, ArrayList<Formulario> formularios, ArrayList<Componente> componentes) {
         this.usuarios = usuarios;
         this.formularios = formularios;
@@ -36,23 +36,38 @@ public class Verificar {
             //CREAR USUARIO
             if (usuarios.get(i) instanceof CrearUsuario) {
                 CrearUsuario crearU = (CrearUsuario) usuarios.get(i);
-                System.out.println(crearU.getUsuario());
-                System.out.println(crearU.getPassword());
+                if(!crearU.getUsuario().equals(null)&& !crearU.getPassword().equals(null)){
+                    System.out.println(crearU.getUsuario());
+                    System.out.println(crearU.getPassword());
+                }else{
+                    //NO SE AGREGARON LOS PARAMETROS OBLIGATORIOS
+                }
+                
             }
             //MODIFICAR USUARIO
-            if (usuarios.get(i) instanceof ModificarUsuario) {
-                ModificarUsuario modif = (ModificarUsuario) usuarios.get(i);
-                System.out.println(modif.getUsuarioAnt());
-                System.out.println(modif.getUsuarioNue());
-                System.out.println("NUEVO PASS"+modif.getNuevoPass());
-                if (modif.getFechaModif().isEmpty() | modif.getFechaModif() == null) {
-                    String timeStamp = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
-                    modif.setFechaModif(timeStamp);
-                    System.out.println("fecha"+modif.getFechaModif());
+            else if (usuarios.get(i) instanceof ModificarUsuario) {
+                System.out.println("SI MODIFICA");
+                ModificarUsuario modifs = (ModificarUsuario) usuarios.get(i);
+                if (!modifs.getUsuarioAnt().equals(null) && !modifs.getUsuarioNue().equals(null) && !modifs.getNuevoPass().equals(null)) {
+                    System.out.println(modifs.getUsuarioAnt());
+                    System.out.println(modifs.getUsuarioNue());
+                    System.out.println("NUEVO PASS" + modifs.getNuevoPass());
+
+                    if (modifs.getFechaModif() == null) {
+                        modifs.setFechaModif(timeStamp);
+                        System.out.println("fecha1" + modifs.getFechaModif());
+                    } else {
+                        System.out.println("fecha2" + modifs.getFechaModif());
+                    }
+
+                } else {
+                    //NO SE ESTABLECIERON LOS PARAMETROS OBLIGATORIOS
+                    System.out.println(" NO SE ESTABLECIERON PARAMETROS OBLIGATORIOS");
                 }
-                System.out.println("New Pass"+modif.getNuevoPass());
             }
-            if (usuarios.get(i) instanceof EliminarUsuario) {
+            
+            
+            else if (usuarios.get(i) instanceof EliminarUsuario) {
                 EliminarUsuario elimU = (EliminarUsuario) usuarios.get(i);
                 System.out.println(elimU.getUsuario());
             }
@@ -63,36 +78,53 @@ public class Verificar {
 
         for (int i = 0; i < formularios.size(); i++) {
             if (formularios.get(i) instanceof NuevoForm) {
-                NuevoForm newF = (NuevoForm) formularios.get(i);
-                System.out.println(newF.getId());
-                System.out.println(newF.getTitulo());
-                System.out.println(newF.getNombre());
-                System.out.println(newF.getTema());
+                NuevoForm nForm = (NuevoForm) formularios.get(i);
+                if(nForm.getId()!=null && nForm.getTitulo()!=null &&nForm.getNombre()!=null &&nForm.getTema()!=null){
+                  //NuevoForm newF = (NuevoForm) formularios.get(i);
+                System.out.println(nForm.getId());
+                System.out.println(nForm.getTitulo());
+                System.out.println(nForm.getNombre());
+                System.out.println(nForm.getTema());
 
-                if (newF.getUsuarioCreacion().isEmpty() | newF.getUsuarioCreacion() == null) {
-                    newF.setUsuarioCreacion(usuarioLogueado);
+                if (nForm.getUsuarioCreacion() == null) {
+                    nForm.setUsuarioCreacion(usuarioLogueado);
                 }
-                System.out.println(newF.getUsuarioCreacion());
+                System.out.println(nForm.getUsuarioCreacion());
 
-                if (newF.getFechaCreacion().isEmpty() | newF.getFechaCreacion() == null) {
-                    String timeStamp = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
-                    newF.setFechaCreacion(timeStamp);
+                if (nForm.getFechaCreacion() == null) {
+                    //String timeStamp = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
+                    nForm.setFechaCreacion("Fe P:"+timeStamp);
+                }else{
+                    System.out.println(nForm.getFechaCreacion());
                 }
-                System.out.println(newF.getFechaCreacion());
+                    
+                    
+                }
+                
+                
             }
 
-            if (formularios.get(i) instanceof EliminarForm) {
+
+            else if (formularios.get(i) instanceof EliminarForm) {
                 EliminarForm elimForm = (EliminarForm) formularios.get(i);
                 System.out.println(elimForm.getId());
 
             }
 
-            if (formularios.get(i) instanceof ModificarForm) {
+            
+            
+            
+            else if (formularios.get(i) instanceof ModificarForm) {
                 ModificarForm modif = (ModificarForm) formularios.get(i);
+                if(modif.getId()!=null && modif.getTitulo()!=null &&modif.getNombre()!=null &&modif.getTema()!=null){
+                
                 System.out.println(modif.getId());
                 System.out.println(modif.getTitulo());
                 System.out.println(modif.getNombre());
                 System.out.println(modif.getTema());
+                }else{
+                    System.out.println("NO SE DEFINIERON PARAMETROS OBLIGATORIOS EN MODIF FORM");
+                }
             }
         }
     }
@@ -102,14 +134,14 @@ public class Verificar {
             if (componentes.get(i) instanceof AgregarComponente) {
                 AgregarComponente AgregComp = (AgregarComponente) componentes.get(i);
 
-                if (!AgregComp.getClase().equals(null)) {
+                if (AgregComp.getClase()!=null) {
 
                     //VERIFICA LA CLASE CAMPO_TEXTO
-                    if (AgregComp.getClase().trim().equalsIgnoreCase("CAMPO_TEXTO")) {
+                    if (AgregComp.getClase().equalsIgnoreCase("CAMPO_TEXTO")) {
                         //HTML crear y verificar si los componentes principales estan vacios
-                        if (AgregComp.getOpciones().equals(null) && AgregComp.getUrl().equals(null) && AgregComp.getFilas() == -1 && AgregComp.getColumnas() == -1) {
+                        if (AgregComp.getOpciones()==null && AgregComp.getUrl()==null && AgregComp.getFilas() == -1 && AgregComp.getColumnas() == -1) {
 
-                            if (!AgregComp.getTextoVisible().equals(null) && !AgregComp.getId().equals(null) && !AgregComp.getNombreCampo().equals(null) && !AgregComp.getFormulario().equals(null)) {
+                            if (AgregComp.getTextoVisible()!=null && AgregComp.getId()!=null && AgregComp.getNombreCampo()!=null && AgregComp.getFormulario()!=null) {
                                 String req;
                                 String ali;
                                 System.out.println(AgregComp.getId());
@@ -258,8 +290,13 @@ public class Verificar {
                     } 
                     ////////COMBO HTML
                     else if (AgregComp.getClase().trim().equalsIgnoreCase("COMBO")) {
-                        if (AgregComp.getUrl().equals(null) && AgregComp.getFilas() == -1 && AgregComp.getColumnas() == -1 && !AgregComp.getOpciones().equals(null)) {
-                            if (!AgregComp.getTextoVisible().equals(null) && !AgregComp.getId().equals(null) && !AgregComp.getNombreCampo().equals(null) && !AgregComp.getFormulario().equals(null)) {
+                        System.out.println("S "+AgregComp.getId());
+                                System.out.println("S "+AgregComp.getNombreCampo());
+                                System.out.println("S "+AgregComp.getTextoVisible());
+                                System.out.println("S "+AgregComp.getFormulario());
+                                System.out.println("S "+AgregComp.getOpciones());
+                        if (AgregComp.getUrl()==null && AgregComp.getFilas() == -1 && AgregComp.getColumnas() == -1 && AgregComp.getOpciones()!=null) {
+                            if (AgregComp.getTextoVisible()!=null && AgregComp.getId()!=null && AgregComp.getNombreCampo()!=null && AgregComp.getFormulario()!=null) {
                                 String ali;
                                 String req;
 
@@ -268,14 +305,14 @@ public class Verificar {
                                 System.out.println(AgregComp.getTextoVisible());
                                 System.out.println(AgregComp.getFormulario());
                                 System.out.println(AgregComp.getOpciones());
-                                if (!AgregComp.getRequerido().equals(null)) {
+                                if (AgregComp.getRequerido()!=null) {
                                     req = AgregComp.getRequerido();
                                 } else {
                                     req = " ";
                                 }
                                 System.out.println(AgregComp.getRequerido());
 
-                                if (!AgregComp.getAlineacion().equals(null)) {
+                                if (AgregComp.getAlineacion()!=null) {
                                     ali = AgregComp.getAlineacion();
                                 } else {
                                     ali = " ";
@@ -284,10 +321,12 @@ public class Verificar {
                                 ComboH cmb = new ComboH(AgregComp.getTextoVisible(), AgregComp.getId(), AgregComp.getFormulario(), AgregComp.getNombreCampo(), AgregComp.getOpciones(), req, ali);
 
                             } else {
+                                System.out.println("NO SE DEFINIO UN PARAMETRO OBLIGATORIO");
                                 //NO SE ESTABLECIERON LOS PARAMETROS OBLIGATORIOS
                             }
 
                         } else {
+                            System.out.println("SE DEFINIO UN PARAMETRO DE MAS");
                             //SE DEFINIO UN PARAMETRO INCORRECTO
                         }
                     } 

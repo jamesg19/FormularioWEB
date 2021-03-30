@@ -5,11 +5,8 @@
  */
 package com.mycompany.formularios;
 
-import Analizadores.LexerCup;
-import Analizadores.parser;
-import GestorIndigo.ErrorSintactico;
-import GestorIndigo.ErrorLexico;
-import GestorIndigo.AnalizaIndigo;
+import Analizadores.*;
+import GestorIndigo.*;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -39,18 +36,15 @@ public class recibeHTTP extends HttpServlet implements Serializable {
         response.setContentType("text/html;charset=UTF-8");
         //RECIBE EL PARAMETRO DE LA APP CLIENTE
         
-        
         try (PrintWriter out = response.getWriter()) {
-            String CodigoIndigo = request.getParameter("CodigoIndigo");
-            String aut = request.getParameter("Autor");
-            
+            String usr = request.getParameter("Usuario");
+            String codigo = request.getParameter("UsuarioP");
             
             
 //            //out.append(" JAMES ");
             //LO ENVIA A ANALIZAR
-            AnalizaIndigo gestor = new AnalizaIndigo(CodigoIndigo);
-            
-            gestor.Analizar(CodigoIndigo);
+            Servidor server= new Servidor();
+            server.startServer();
 //            
 //            lexicoLST=gestor.getLexicoLST();
 //            sintacticoLST=gestor.getSintacticoLST();
@@ -77,7 +71,7 @@ public class recibeHTTP extends HttpServlet implements Serializable {
 //                }
 //            }  
         } catch (Exception e) {
-            System.out.println("ERROR EN SERVLET PTM"+e);
+            System.out.println("ERROR EN SERVLET "+e);
             PrintWriter out = response.getWriter();
             Logger.getLogger(recibeHTTP.class.getName()).log(Level.SEVERE, null, e);
         }

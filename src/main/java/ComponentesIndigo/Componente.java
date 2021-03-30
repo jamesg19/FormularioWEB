@@ -9,14 +9,15 @@ public class Componente implements Serializable {
     private String Id;
     private String nombreCampo;
     private String formulario;
+    
     private int indice=1;
     private String clase;
     private String textoVisible;
     private String alineacion;
     private String requerido;
     private String opciones;
-    private int filas=1;
-    private int columnas=1;
+    private int filas=-1;
+    private int columnas=-1;
     private String Url;
 
     public Componente(String Id, String nombreCampo, String formulario, int indice, String clase, String textoVisible, String alineacion, String requerido, String opciones, int filas, int columnas) {

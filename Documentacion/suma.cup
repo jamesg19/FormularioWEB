@@ -1,0 +1,340 @@
+ /*JAMES GRAMAJO COMPILADORES1 201731172*/
+package Analizadores;
+import java_cup.runtime.Symbol;
+import java_cup.runtime.XMLElement;
+import java.util.ArrayList;
+import UsuarioIndigo.*;
+import FormSolicitudIndigo.*;
+import ComponentesIndigo.*;
+import GestorIndigo.*;
+import java.util.ArrayList;
+parser code
+{:	
+	
+	ArrayList<ErrorSintactico> sintactico = new ArrayList<ErrorSintactico>();
+	private Symbol sym;
+    int contCreaUser=0;
+	public CrearUsuario objCrearUsuario= new CrearUsuario();
+	public ModificarUsuario objModifUsuario= new ModificarUsuario();
+	public EliminarUsuario objElimUsuario= new EliminarUsuario();
+	public NuevoForm objNuevoForm= new NuevoForm();
+	public ModificarForm objModifForm= new ModificarForm();
+	public EliminarForm objElimForm= new EliminarForm();
+	public AgregarComponente objAgreComp= new AgregarComponente();
+	public ModificarComponente objModifComp= new ModificarComponente();
+	public EliminarComponente objElimComp= new EliminarComponente();
+	ArrayList<Usuario> lstUsuario = new ArrayList<Usuario>();
+	ArrayList<Formulario> lstFormulario = new ArrayList<Formulario>();
+	ArrayList<Componente>  lstComponente = new ArrayList<Componente>();
+    
+	
+    public Symbol getS(){
+        return this.sym;
+    }
+	public parser( LexerCup lex){
+	 super(lex);
+	}
+	public void report_error(String message, Object info){ 
+		System.out.println("\nREPORT ERROR");
+	}
+	public void report_fatal_error(String message, Object info){
+		System.out.println("\nREPORT FATAL");
+	}
+	
+	public void syntax_error(Symbol cur_token) {
+		//ErrorSintactico errorr= new ErrorSintactico(symbl_name_from_id(expected_token_ids().get(0))+"",cur_token.value+"",cur_token.left+"",cur_token.right+"");
+		ErrorSintactico errorr= new ErrorSintactico();
+		errorr.setTokenEsperado(symbl_name_from_id(expected_token_ids().get(0))+"");
+		errorr.setLinea(cur_token.value+"");
+		errorr.setColumna(cur_token.left+"");
+		errorr.setValor(cur_token.right+"");
+
+        sintactico.add(errorr);
+		System.out.println("SE ESPERABA: "+symbl_name_from_id(expected_token_ids().get(0)));
+        System.out.println("syntaxerr: " + symbl_name_from_id(cur_token.sym) +" Columna: "+cur_token.right+" Linea: "+cur_token.left+" Valor:"+cur_token.value);
+    }
+	protected int error_sync_size() {
+        return 1;
+    }
+	public ArrayList<Usuario> getLstUsuario() {
+        return lstUsuario;
+    }
+	public ArrayList<Formulario> getLstFormulario() {
+        return lstFormulario;
+    }
+	public ArrayList<Componente> getLstComponente() {
+        return lstComponente;
+    }
+	public ArrayList<ErrorSintactico> getSintacticoERROR() {
+        return sintactico;
+    }
+
+:};
+//Llave_a, Llave_c, Corchete_a, Corchete_c, P_coma,Identificador,Igual
+
+terminal DipleL, DipleR, Exclamation, IniSolicitudes, FinSolicitudes, IniSolicitud, FinSolicitud,
+Parentesis_L, Parentesis_R, Corchete_L, Corchete_R, Llave_L, Llave_R, Separador,
+DosP, Coma, Comilla, CredencialUser, CrearUsuario, Usuario, Password, ModificarUser, UserAntiguo,
+UserNuevo, FechaModif, EliminarUsuario, Login, NuevoPassword, FechaF, Textos;
+
+terminal ParametroForm, NuevoFormulario, ID, TituloForm, NombreForm, TemaForm, UserCreacion, FechaCreacion, EliminarForm, ModificarForm, 
+TDark, TBlue, TWhite;
+
+terminal Allids, Numeros ;
+
+terminal ParametrosComponente, AgregarComponente, EliminarComponente, ModificarComponente, NombreCampo, Formulario, Clase, CampoTexto, AreaTexto, Checkbox, 
+Radio , Fichero, Imagen, Combo, Boton, Indice, TextoVisible, Alineacion, Centro, Izquierda, Derecha, Justificar, Requerido, Si, No, Opciones, 
+Filas, Columnas, Url, DirURL,EXP_user_pass;
+terminal ConsultaDatos, Consultas, Consulta, Select, To, Form, Where, And, Or, Not, Apostrofe;
+/* No terminales */	 
+non terminal ESTADO_INICIAL, SOLICITUDES, SOLICITUD,TIPO_SOLICITUD, OPEN_SOLICITUDES, END_SOLICITUD, BLOQUE_CREA_USER, BLOQUE_CREA_USER2, AB, AB2, AB3, 
+AB4, AB5, AB6, AB7, AB8, AB9, AB10, 
+BLOQUE_MODIF_USER, BLOQUE_MODIF_USER2, BLOQUE_LOGIN_USER, BLOQUE_LOGIN_USER2, BLOQUE_ELIMINA_COMP, BLOQUE_MODIF_COMP, BLOQUE_MODIF_COMP2;
+
+non terminal TEMAS, CLASESCOMPONENTES, BLOQUE_NUEVO_FORM, BLOQUE_NUEVO_FORM2, BLOQUE_ELIMINA_USUARIO, BLOQUE_ELIMINA_FORM, BLOQUE_MODIF_FORM, 
+BLOQUE_MODIF_FORM2, REQUERIDO; 
+
+non terminal BLOQUE_PARAMETRO_COMP, BLOQUE_PARAMETRO_COMP2, ALINEACIONES, XXX, N_FORM, M_FORM, M_COMP, EXX, TEXTOS;
+/*donde se inician las instrucciones*/
+start with ESTADO_INICIAL;
+
+ESTADO_INICIAL::=
+	SOLICITUDES
+	| SOLICITUD
+;
+SOLICITUDES::=
+	OPEN_SOLICITUDES  SOLICITUD DipleL Exclamation FinSolicitudes DipleR
+;
+
+SOLICITUD::=
+     SOLICITUD DipleL Exclamation IniSolicitud DosP Comilla TIPO_SOLICITUD END_SOLICITUD 
+	| DipleL Exclamation IniSolicitud DosP Comilla TIPO_SOLICITUD END_SOLICITUD 
+;
+
+OPEN_SOLICITUDES::=
+	DipleL Exclamation IniSolicitudes DipleR
+;
+TIPO_SOLICITUD::=
+	{:contCreaUser++;  :}
+	 CrearUsuario Comilla DipleR 
+	Llave_L Comilla CredencialUser Comilla DosP Corchete_L  
+	AB  
+	|  ModificarUser Comilla DipleR 
+	Llave_L Comilla CredencialUser Comilla DosP Corchete_L    
+	AB2 
+
+	| EliminarUsuario Comilla DipleR 
+	Llave_L Comilla CredencialUser Comilla DosP Corchete_L    
+	AB7 
+	| Login Comilla DipleR 
+	Llave_L Comilla CredencialUser Comilla DosP Corchete_L    
+	AB3
+	| NuevoFormulario Comilla DipleR
+	Llave_L Comilla ParametroForm Comilla DosP Corchete_L 
+	AB4
+	|  EliminarForm Comilla DipleR
+	Llave_L Comilla ParametroForm Comilla DosP Corchete_L 
+		AB8 
+	|  ModificarForm Comilla DipleR 
+	Llave_L Comilla ParametroForm Comilla DosP Corchete_L    
+	AB5 
+	| AgregarComponente Comilla DipleR 
+	Llave_L Comilla ParametrosComponente Comilla DosP Corchete_L    
+	AB6
+	| EliminarComponente Comilla DipleR 
+	Llave_L Comilla ParametrosComponente Comilla DosP Corchete_L    
+	AB9
+	| ModificarComponente Comilla DipleR 
+	Llave_L Comilla ParametrosComponente Comilla DosP Corchete_L    
+	AB10
+	
+;
+///////////////////////////////////////////////////////////////////////////////////////////////
+AB::=
+	  BLOQUE_CREA_USER  Coma AB 
+	|  BLOQUE_CREA_USER 
+;
+BLOQUE_CREA_USER::=
+	  Llave_L BLOQUE_CREA_USER2 Coma BLOQUE_CREA_USER {: :}  
+	| BLOQUE_CREA_USER2 Llave_R {:lstUsuario.add(objCrearUsuario); objCrearUsuario= new CrearUsuario(); :}
+;
+BLOQUE_CREA_USER2::=
+	  Comilla Usuario Comilla DosP Comilla EXP_user_pass:aa Comilla {:objCrearUsuario.setUsuario(aa.toString());:}
+	|  Comilla Password Comilla DosP Comilla EXP_user_pass:a Comilla {:objCrearUsuario.setPassword(a.toString());:}
+;
+AB2::=
+	BLOQUE_MODIF_USER Coma AB2
+	| BLOQUE_MODIF_USER
+;
+
+BLOQUE_MODIF_USER::=
+		 Llave_L BLOQUE_MODIF_USER2 Coma XXX 
+		
+;
+XXX::=
+	 BLOQUE_MODIF_USER2 Coma XXX
+	 | BLOQUE_MODIF_USER2 Llave_R {:lstUsuario.add(objModifUsuario); objModifUsuario= new ModificarUsuario(); :}
+;
+BLOQUE_MODIF_USER2::=
+	 Comilla UserAntiguo Comilla DosP Comilla EXP_user_pass:aa Comilla {: objModifUsuario.setUsuarioAnt(aa.toString());:}
+	| Comilla UserNuevo Comilla DosP Comilla EXP_user_pass:a Comilla {: objModifUsuario.setUsuarioNue(a.toString());:}
+	| Comilla NuevoPassword Comilla DosP Comilla EXP_user_pass:pas Comilla {: objModifUsuario.setNuevoPass(pas.toString());:}
+	| Comilla FechaModif Comilla DosP Comilla FechaF:f Comilla {:objModifUsuario.setFechaModif(f.toString());:}
+;
+AB3::=
+	 BLOQUE_LOGIN_USER Coma AB3
+	| BLOQUE_LOGIN_USER 
+;
+BLOQUE_LOGIN_USER::=
+	Llave_L BLOQUE_LOGIN_USER2 Coma BLOQUE_LOGIN_USER
+	| BLOQUE_LOGIN_USER2 Llave_R
+;
+BLOQUE_LOGIN_USER2::=
+	Comilla Usuario Comilla DosP Comilla EXP_user_pass Comilla 
+	| Comilla Password Comilla DosP Comilla EXP_user_pass Comilla
+;
+AB4::=
+	 BLOQUE_NUEVO_FORM Coma AB4
+	| BLOQUE_NUEVO_FORM 
+;
+BLOQUE_NUEVO_FORM::=
+	Llave_L BLOQUE_NUEVO_FORM2 Coma N_FORM
+;
+N_FORM::=
+	BLOQUE_NUEVO_FORM2 Coma N_FORM
+	| BLOQUE_NUEVO_FORM2 Llave_R {:lstFormulario.add(objNuevoForm); objNuevoForm= new NuevoForm(); :}
+;
+BLOQUE_NUEVO_FORM2::=
+	  Comilla ID Comilla DosP Comilla Allids:id Comilla {:objNuevoForm.setId(id.toString()); :}
+	| Comilla TituloForm Comilla DosP Comilla TEXTOS:t Comilla {:objNuevoForm.setTitulo(t.toString());:}
+	| Comilla NombreForm Comilla DosP Comilla EXP_user_pass:n Comilla {:objNuevoForm.setNombre(n.toString());:}
+	| Comilla TemaForm Comilla DosP Comilla TEMAS:te Comilla  {:objNuevoForm.setTema(te.toString());  :}
+	| Comilla UserCreacion Comilla DosP Comilla EXP_user_pass:us Comilla {:objNuevoForm.setUsuarioCreacion(us.toString());:}
+	| Comilla FechaCreacion Comilla DosP Comilla FechaF:fec Comilla {:objNuevoForm.setFechaCreacion(fec.toString());:}
+;
+AB5::=
+	BLOQUE_MODIF_FORM Coma AB5
+	| BLOQUE_MODIF_FORM
+;
+
+BLOQUE_MODIF_FORM::=
+	Llave_L BLOQUE_MODIF_FORM2 Coma M_FORM
+;
+M_FORM::=
+	 BLOQUE_MODIF_FORM2 Coma M_FORM
+	| BLOQUE_MODIF_FORM2 Llave_R {:lstFormulario.add(objModifForm); objModifForm= new ModificarForm(); :}                 
+;
+BLOQUE_MODIF_FORM2::=
+	Comilla ID Comilla DosP Comilla Allids:id Comilla {:objModifForm.setId(id.toString());:}
+	| Comilla TituloForm Comilla DosP Comilla TEXTOS:tit Comilla {:objModifForm.setTitulo(tit.toString());:}
+	| Comilla NombreForm Comilla DosP Comilla EXP_user_pass:nom Comilla {:objModifForm.setNombre(nom.toString());:}
+	| Comilla TemaForm Comilla DosP Comilla TEMAS:tem Comilla {:objModifForm.setTema(tem.toString());:}
+;
+AB7::= 
+	BLOQUE_ELIMINA_USUARIO Coma AB7
+	| BLOQUE_ELIMINA_USUARIO   
+;
+BLOQUE_ELIMINA_USUARIO::=
+	Llave_L Comilla Usuario Comilla DosP Comilla EXP_user_pass:u Comilla Llave_R {:objElimUsuario.setUsuario(u.toString()); lstUsuario.add(objElimUsuario); objElimUsuario= new EliminarUsuario();    :}
+;
+AB8::=
+	BLOQUE_ELIMINA_FORM Coma AB8
+	| BLOQUE_ELIMINA_FORM
+;
+BLOQUE_ELIMINA_FORM::=
+	Llave_L Comilla ID Comilla DosP Comilla Allids:id Comilla Llave_R {:objElimForm.setId(id.toString());lstFormulario.add(objElimForm); objElimForm= new EliminarForm();    :}
+;
+AB9::=
+	BLOQUE_ELIMINA_COMP Coma AB9
+	| BLOQUE_ELIMINA_COMP
+;
+BLOQUE_ELIMINA_COMP::=
+	Llave_L Comilla ID Comilla DosP Comilla Allids:id Comilla Llave_R {:objElimComp.setId(id.toString()); lstComponente.add(objElimComp); objElimComp= new EliminarComponente();    :}
+;
+
+AB10::=
+	BLOQUE_MODIF_COMP Coma AB10
+	| BLOQUE_MODIF_COMP
+;
+BLOQUE_MODIF_COMP::=
+Llave_L BLOQUE_MODIF_COMP2 Coma M_COMP
+;
+M_COMP::=
+		BLOQUE_MODIF_COMP2 Coma M_COMP
+		| BLOQUE_MODIF_COMP2 Llave_R
+;
+BLOQUE_MODIF_COMP2::=
+	Comilla ID Comilla DosP Comilla Allids:id Comilla 					{: objModifComp.setId(id.toString()); :}
+	| Comilla NombreCampo Comilla DosP Comilla EXP_user_pass:nom Comilla {:objModifComp.setId(nom.toString()); :}
+	| Comilla Formulario Comilla DosP Comilla Allids:idform Comilla     {:objModifComp.setFormulario(idform.toString()); :}
+	| Comilla Clase Comilla DosP Comilla CLASESCOMPONENTES:cCom Comilla {:objModifComp.setClase(cCom.toString()); :}
+	| Comilla TextoVisible Comilla DosP Comilla TEXTOS:txts Comilla 	{:objModifComp.setTextoVisible(txts.toString()); :}
+	| Comilla Alineacion Comilla DosP Comilla ALINEACIONES:ali Comilla  {:objModifComp.setAlineacion(ali.toString()); :}
+	| Comilla Indice Comilla DosP Comilla Numeros:indi Comilla			{:objModifComp.setIndice(Integer.parseInt(indi.toString().trim())); :}
+	| Comilla Opciones Comilla DosP Comilla TEXTOS:tst Comilla			{:objModifComp.setOpciones(tst.toString()); :}
+	| Comilla Filas Comilla DosP Comilla Numeros:fil Comilla 			{:objModifComp.setFilas(Integer.parseInt(fil.toString().trim())); :}
+	| Comilla Columnas Comilla DosP Comilla Numeros:col Comilla 		{:objModifComp.setColumnas(Integer.parseInt(col.toString().trim())); :}
+	| Comilla Url Comilla DosP Comilla DirURL:rl Comilla 				{:objModifComp.setUrl(rl.toString()); :}
+;
+AB6::=
+	BLOQUE_PARAMETRO_COMP Coma AB6
+	| BLOQUE_PARAMETRO_COMP
+;
+BLOQUE_PARAMETRO_COMP::=
+	 Llave_L BLOQUE_PARAMETRO_COMP2 Coma EXX
+	
+;
+EXX::=
+	BLOQUE_PARAMETRO_COMP2 Coma EXX
+	| BLOQUE_PARAMETRO_COMP2 Llave_R {:lstComponente.add(objAgreComp); objAgreComp= new AgregarComponente();  :}
+;
+BLOQUE_PARAMETRO_COMP2::=
+	Comilla ID Comilla DosP Comilla Allids:id Comilla 					{: objAgreComp.setId(id.toString()); :}
+	| Comilla NombreCampo Comilla DosP Comilla EXP_user_pass:nom Comilla {:objAgreComp.setId(nom.toString()); :}
+	| Comilla Formulario Comilla DosP Comilla Allids:idform Comilla     {:objAgreComp.setFormulario(idform.toString()); :}
+	| Comilla Clase Comilla DosP Comilla CLASESCOMPONENTES:cCom Comilla {:objAgreComp.setClase(cCom.toString()); :}
+	| Comilla TextoVisible Comilla DosP Comilla TEXTOS:txts Comilla {: objAgreComp.setTextoVisible(txts.toString()); :}
+	| Comilla Alineacion Comilla DosP Comilla ALINEACIONES:ali Comilla  {:objAgreComp.setAlineacion(ali.toString()); :}
+	| Comilla Requerido Comilla DosP Comilla REQUERIDO:req Comilla		{:objAgreComp.setRequerido(req.toString()); :}
+	| Comilla Opciones Comilla DosP Comilla TEXTOS:tst Comilla			{:objAgreComp.setOpciones(tst.toString()); :}
+	| Comilla Filas Comilla DosP Comilla Numeros:fil Comilla 			{:objAgreComp.setFilas(Integer.parseInt(fil.toString().trim())); :}
+	| Comilla Columnas Comilla DosP Comilla Numeros:col Comilla 		{:objAgreComp.setColumnas(Integer.parseInt(col.toString().trim())); :}
+	| Comilla Url Comilla DosP Comilla DirURL:rl Comilla 				{:objAgreComp.setUrl(rl.toString()); :}
+;
+
+CLASESCOMPONENTES::=
+	CampoTexto:c {:RESULT=c;:}
+	| AreaTexto:ar {:RESULT=ar;:}
+	| Checkbox:ch {:RESULT=ch;:}
+	| Radio:rd {:RESULT=rd;:}
+	| Fichero:fch {:RESULT=fch;:}
+	| Imagen:img {:RESULT=img;:}
+	| Combo:cmb {:RESULT=cmb;:}
+	| Boton:btn {:RESULT=btn;:}
+;
+REQUERIDO::=
+	Si:yes {:RESULT=yes;:}
+	| No:not  {:RESULT=not;:}
+;
+ALINEACIONES::=
+	Centro:ctr {:RESULT=ctr;:}
+	| Izquierda:iqz {:RESULT=iqz;:}
+	| Derecha:der {:RESULT=der;:}
+	| Justificar:jus {:RESULT=jus;:}
+;
+TEMAS::=
+	TDark:drk {:RESULT=drk;:}
+	| TBlue:ble {:RESULT=ble;:}
+	| TWhite:wht {:RESULT=wht;:}
+;
+END_SOLICITUD::=       
+	Corchete_R                       
+	Llave_R
+	DipleL FinSolicitud Exclamation DipleR
+;
+TEXTOS::=
+	Textos:t {:RESULT=t;:}
+	| EXP_user_pass:s {:RESULT=s;:}
+;
+
+/*ALGUN DIA SERE INGE :')*/

@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package GestorIndigo;
 
 import GestorIndigo.ErrorLexico;
@@ -19,10 +13,6 @@ import ComponentesIndigo.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- * 
- * @author James
- */
 public class AnalizaIndigo implements Serializable {
     ArrayList<ErrorLexico> lexicoLST = new ArrayList<ErrorLexico>();
     ArrayList<ErrorSintactico> sintacticoLST = new ArrayList<ErrorSintactico>();
@@ -51,11 +41,14 @@ public class AnalizaIndigo implements Serializable {
             lexicoLST=new LexerCup(new StringReader(cod)).getLexicoERROR();
             Verificar semantico= new Verificar(usuarios,formularios,componentes);
             semantico.AnalisisUsuarios();
+            semantico.AnalisisFormularios();
+            semantico.AnalisisComponentes();
+            
             //System.out.println(parser.getSintacticoERROR().size()+"NUMERO TOTAL");
             } catch(Exception ex){
 
-//            System.out.println("errrrrrrrrrorrrrrrrrrrrrrrrrrrrr de analizadoressss  "+ex);
-//            Logger.getLogger(AnalizaIndigo.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("errrrrrrrrrorrrrrrrrrrrrrrrrrrrr de analizadoressss  "+ex);
+            Logger.getLogger(AnalizaIndigo.class.getName()).log(Level.SEVERE, null, ex);
 
         }
     }

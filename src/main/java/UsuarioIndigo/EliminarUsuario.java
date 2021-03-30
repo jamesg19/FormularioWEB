@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 /**
  * 
- * @author Sammy Guergachi <sguergachi at gmail.com>
+ * @author James
  */
 public class EliminarUsuario extends Usuario implements Serializable{
     
