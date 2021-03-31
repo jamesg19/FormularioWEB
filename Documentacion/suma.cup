@@ -249,7 +249,14 @@ AB9::=
 	| BLOQUE_ELIMINA_COMP
 ;
 BLOQUE_ELIMINA_COMP::=
-	Llave_L Comilla ID Comilla DosP Comilla Allids:id Comilla Llave_R {:objElimComp.setId(id.toString()); lstComponente.add(objElimComp); objElimComp= new EliminarComponente();    :}
+	Llave_L 
+	Comilla ID Comilla DosP Comilla Allids:id Comilla Coma
+	Comilla Formulario Comilla DosP Comilla Allids:idform Comilla
+	Llave_R {:objElimComp.setId(id.toString()); objElimComp.setFormulario(idform.toString()); lstComponente.add(objElimComp); objElimComp= new EliminarComponente(); :}
+	| Llave_L 
+	Comilla Formulario Comilla DosP Comilla Allids:idform Comilla Coma
+	Comilla ID Comilla DosP Comilla Allids:id Comilla 
+	Llave_R {:objElimComp.setId(id.toString()); objElimComp.setFormulario(idform.toString()); lstComponente.add(objElimComp); objElimComp= new EliminarComponente(); :}
 ;
 
 AB10::=
@@ -261,14 +268,14 @@ Llave_L BLOQUE_MODIF_COMP2 Coma M_COMP
 ;
 M_COMP::=
 		BLOQUE_MODIF_COMP2 Coma M_COMP
-		| BLOQUE_MODIF_COMP2 Llave_R
+		| BLOQUE_MODIF_COMP2 Llave_R   {:lstComponente.add(objModifComp); objModifComp= new ModificarComponente();  :}
 ;
 BLOQUE_MODIF_COMP2::=
 	Comilla ID Comilla DosP Comilla Allids:id Comilla 					{: objModifComp.setId(id.toString()); :}
-	| Comilla NombreCampo Comilla DosP Comilla EXP_user_pass:nom Comilla {:objModifComp.setId(nom.toString()); :}
+	| Comilla NombreCampo Comilla DosP Comilla EXP_user_pass:nom Comilla {:objModifComp.setNombreCampo(nom.toString()); :}
 	| Comilla Formulario Comilla DosP Comilla Allids:idform Comilla     {:objModifComp.setFormulario(idform.toString()); :}
 	| Comilla Clase Comilla DosP Comilla CLASESCOMPONENTES:cCom Comilla {:objModifComp.setClase(cCom.toString()); :}
-	| Comilla TextoVisible Comilla DosP Comilla TEXTOS:txts Comilla 	{:objModifComp.setTextoVisible(txts.toString()); :}
+	| Comilla TextoVisible Comilla DosP Comilla TEXTOS:txtts Comilla 	{:objModifComp.setTextoVisible(txtts.toString()); :}
 	| Comilla Alineacion Comilla DosP Comilla ALINEACIONES:ali Comilla  {:objModifComp.setAlineacion(ali.toString()); :}
 	| Comilla Indice Comilla DosP Comilla Numeros:indi Comilla			{:objModifComp.setIndice(Integer.parseInt(indi.toString().trim())); :}
 	| Comilla Opciones Comilla DosP Comilla TEXTOS:tst Comilla			{:objModifComp.setOpciones(tst.toString()); :}
@@ -290,7 +297,7 @@ EXX::=
 ;
 BLOQUE_PARAMETRO_COMP2::=
 	Comilla ID Comilla DosP Comilla Allids:id Comilla 					{: objAgreComp.setId(id.toString()); :}
-	| Comilla NombreCampo Comilla DosP Comilla EXP_user_pass:nom Comilla {:objAgreComp.setId(nom.toString()); :}
+	| Comilla NombreCampo Comilla DosP Comilla EXP_user_pass:nom Comilla {:objAgreComp.setNombreCampo(nom.toString()); :}
 	| Comilla Formulario Comilla DosP Comilla Allids:idform Comilla     {:objAgreComp.setFormulario(idform.toString()); :}
 	| Comilla Clase Comilla DosP Comilla CLASESCOMPONENTES:cCom Comilla {:objAgreComp.setClase(cCom.toString()); :}
 	| Comilla TextoVisible Comilla DosP Comilla TEXTOS:txts Comilla {: objAgreComp.setTextoVisible(txts.toString()); :}
@@ -333,8 +340,8 @@ END_SOLICITUD::=
 	DipleL FinSolicitud Exclamation DipleR
 ;
 TEXTOS::=
-	Textos:t {:RESULT=t;:}
-	| EXP_user_pass:s {:RESULT=s;:}
+	Textos:asd {:RESULT=asd;:}
+	| EXP_user_pass:adf {:RESULT=adf;:}
 ;
 
 /*ALGUN DIA SERE INGE :')*/

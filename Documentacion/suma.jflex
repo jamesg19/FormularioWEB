@@ -30,7 +30,7 @@ Fecha = ([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))
 	//parentesis ()
 	//corchetes []
 	//llaves{}
-	    private Symbol symbol(int type, Object value){
+	private Symbol symbol(int type, Object value){
         return new Symbol(type, yyline, yycolumn, value);
     }
     private Symbol symbol(int type){

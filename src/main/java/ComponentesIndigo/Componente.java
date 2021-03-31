@@ -9,8 +9,7 @@ public class Componente implements Serializable {
     private String Id;
     private String nombreCampo;
     private String formulario;
-    
-    private int indice=1;
+    private int indice=-1;
     private String clase;
     private String textoVisible;
     private String alineacion;

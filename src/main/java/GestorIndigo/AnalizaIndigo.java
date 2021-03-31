@@ -43,6 +43,7 @@ public class AnalizaIndigo implements Serializable {
             semantico.AnalisisUsuarios();
             semantico.AnalisisFormularios();
             semantico.AnalisisComponentes();
+            semantico.HayErrores();
             
             //System.out.println(parser.getSintacticoERROR().size()+"NUMERO TOTAL");
             } catch(Exception ex){

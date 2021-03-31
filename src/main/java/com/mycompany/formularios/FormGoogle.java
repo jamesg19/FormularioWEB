@@ -36,7 +36,7 @@ public class FormGoogle extends HttpServlet {
         
         
         
-        
+        //buscar un formulario solicitado
         try (PrintWriter out = response.getWriter()) {
         String idForm = request.getParameter("Form");
         ReadFormSaved leer=new ReadFormSaved(idForm);

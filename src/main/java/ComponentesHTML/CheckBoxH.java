@@ -42,6 +42,8 @@ public class CheckBoxH {
             setAlineacion("left");
         } else if(Alineacion.trim().equalsIgnoreCase("DERECHA")){
             setAlineacion("right");
+        } else if(Alineacion==null){
+            setAlineacion("center");
         }
         FORMATO="<br>\n "
             + "<div class=\"custom-control custom-checkbox\" align=\""+getAlineacion()+"\" "+getRequerido()+"> \n"
@@ -61,14 +63,14 @@ public class CheckBoxH {
     public void GeneraCheck(String [] partesOpciones){
         for(int i=0; i<parts.length;i++){
         FORMATO+="<input class=\"form-check-input\" type=\"checkbox\" name=\""+Id+i+" \" id=\""+Id+"-"+i+"\">\n" +
-        "  <label class=\"custom-control-label\" for=\""+Id+"-"+i+"\">"+partesOpciones[i].toString()+"</label>\n";
+        "  <label class=\"custom-control-label\" for=\""+Id+"-"+i+"\">"+partesOpciones[i]+"</label>\n";
         }
         FORMATO+="</div>\n";
     }
     public void GeneraCheck1(String [] partesOpciones){
 
         FORMATO+="<input class=\"form-check-input\" type=\"checkbox\" name=\""+Id+0+" \" id=\""+Id+"-"+0+"\">\n" +
-        "  <label class=\"custom-control-label\" for=\""+Id+"-"+0+"\">"+partesOpciones[0].toString()+"</label>\n";
+        "  <label class=\"custom-control-label\" for=\""+Id+"-"+0+"\">"+partesOpciones[0]+"</label>\n";
         
         FORMATO+="</div>\n";
     }
