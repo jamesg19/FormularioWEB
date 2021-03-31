@@ -9,6 +9,7 @@ import ComponentesIndigo.*;
 import FormSolicitudIndigo.*;
 import UsuarioIndigo.*;
 import ComponentesHTML.*;
+import File.ReadFormSaved;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -107,7 +108,7 @@ public class Verificar {
 
                 if (nForm.getFechaCreacion() == null) {
                     //String timeStamp = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
-                    nForm.setFechaCreacion("Fe P:"+timeStamp);
+                    nForm.setFechaCreacion(timeStamp);
                 }else{
                     System.out.println(nForm.getFechaCreacion());
                 }
@@ -774,8 +775,12 @@ public class Verificar {
        
         if(lstErrSementico.isEmpty()){
             GeneraArchivos();
+            System.out.println("NO HAY----------------------------");
         } else{
-            
+            for(int l=0;l <lstErrSementico.size();l++ ){
+                System.out.println(lstErrSementico.get(l));
+                
+            }
         }
     }
     
@@ -785,7 +790,7 @@ public class Verificar {
         //con los componentes que le pertenecen
         for (int i = 0; i < Form_a_Crear.size(); i++) {
             Form_a_Crear.get(i).getId();
-            String FORMATO_FINAL = FORMATO_FORM(Form_a_Crear.get(i).getId(), Form_a_Crear.get(i).getTitulo(), Form_a_Crear.get(i).getNombre(), Form_a_Crear.get(i).getTema(), Form_a_Crear.get(i).getUsuarioCreacion(), Form_a_Crear.get(i).getFechaCreacion());
+            String FORMATO_FINAL = FORMATO_FORM(Form_a_Crear.get(i).getId(), Form_a_Crear.get(i).getTitulo(), Form_a_Crear.get(i).getNombre(), Form_a_Crear.get(i).getTema(), "james", Form_a_Crear.get(i).getFechaCreacion());
 
             int cantComponentes = 0;
             int cantAgregados = 0;
@@ -917,11 +922,13 @@ public class Verificar {
             }
             FORMATO_FINAL += " )"
                     + " }\n"
-                    + ")";
+                    + "\n)";
                     System.out.println("******************************");
                     System.out.println("******************************");
                     System.out.println("******************************");
-                    System.out.println(FORMATO_FINAL);
+                    ReadFormSaved rd= new ReadFormSaved(Form_a_Crear.get(i).getId());
+                    rd.GuardarArchivo(Form_a_Crear.get(i).getId(), FORMATO_FINAL);
+                    
             
             
         }

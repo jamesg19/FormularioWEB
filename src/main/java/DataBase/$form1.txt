@@ -1,0 +1,48 @@
+db.formularios(
+   {
+    "ID_FORMULARIO": "$form1",  
+    "TITULO": "Formulario para encuesta 1",
+    "NOMBRE": "formulario_encuesta_1",
+    "TEMA": "Dark",
+    "USUARIO_CREACION": "james",
+    "FECHA_CREACION":"2021-03-31"
+      "ESTRUCTURA":(
+
+{"ID": "$Df2",
+"NOMBRE_CAMPO": "Pais",
+"CLASE": "COMBO",
+"INDICE": "1",
+"TEXTO_VISIBLE": "Pfd",
+"ALINEACION": "CENTRO",
+"REQUERIDO": "SI",
+"OPCIONES": "Guatema"
+},
+{"ID": "$Df2",
+"NOMBRE_CAMPO": "Pais",
+"CLASE": "COMBO",
+"INDICE": "2",
+"TEXTO_VISIBLE": "Pfd",
+"ALINEACION": "CENTRO",
+"REQUERIDO": "SI",
+"OPCIONES": "Guatema"
+},
+{"ID": "$Df2",
+"NOMBRE_CAMPO": "Pais",
+"CLASE": "COMBO",
+"INDICE": "3",
+"TEXTO_VISIBLE": "Pfd",
+"ALINEACION": "CENTRO",
+"REQUERIDO": "SI",
+"OPCIONES": "Guatema"
+},
+{"ID": "$Df2",
+"NOMBRE_CAMPO": "Pais",
+"CLASE": "COMBO",
+"INDICE": "4",
+"TEXTO_VISIBLE": "Pfd",
+"ALINEACION": "CENTRO",
+"REQUERIDO": "SI",
+"OPCIONES": "Guatema"
+} ) }
+
+)

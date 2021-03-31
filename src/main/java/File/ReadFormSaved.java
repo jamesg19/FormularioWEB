@@ -2,6 +2,7 @@ package File;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import javax.swing.JOptionPane;
 
 /**
@@ -12,6 +13,7 @@ public class ReadFormSaved {
     private String ContenidoArchivo;
     private boolean ExisteArchivo;
     FileInputStream entrada;
+    FileOutputStream salida;
     File archivo;
     String idForm="";
     String PathFijo="C:\\Users\\james\\Documents\\NetBeansProjects\\Formularios\\src\\main\\java\\DataBase\\";
@@ -32,7 +34,7 @@ public class ReadFormSaved {
                     String documento = AbrirArchivo(archivo);
                     ContenidoArchivo=documento;
                     ExisteArchivo=true;
-                    JOptionPane.showMessageDialog(null, ExisteArchivo);
+                    //JOptionPane.showMessageDialog(null, ExisteArchivo);
                 } else {
                     ExisteArchivo=false;
                     System.out.println("archivo invalido");
@@ -62,7 +64,25 @@ public class ReadFormSaved {
         //jTextArea.setText(documento);
         return documento;
     }
+    
+    
+    
+    public boolean GuardarArchivo(String id, String documento) {
+        String mensaje = null;
+        boolean bandera=false;
+        try {
+            File fil= new File(PathFijo+id+".txt");
+            salida = new FileOutputStream(fil);
+            byte[] bytxt = documento.getBytes();
+            salida.write(bytxt);
+            bandera=true;
 
+        } catch (Exception e) {
+
+        }
+
+        return bandera;
+    }
     
     
     
