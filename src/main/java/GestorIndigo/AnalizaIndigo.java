@@ -27,7 +27,7 @@ public class AnalizaIndigo implements Serializable {
     
     public void Analizar(String cod){
         String entrada = codigo;
-            
+        String reporteFinal="";    
         try{
             StringReader readerr = new StringReader(cod);
             LexerCup lexico = new LexerCup(readerr);
@@ -36,16 +36,20 @@ public class AnalizaIndigo implements Serializable {
             usuarios=parser.getLstUsuario();
             formularios=parser.getLstFormulario();
             componentes=parser.getLstComponente();
+            lexicoLST=lexico.getLexicoERROR();
             //obtiene los errores sintacticos
             sintacticoLST=parser.getSintacticoERROR();
             //obtiene lo serrores lexicos
             //lexicoLST=new LexerCup(new StringReader(cod)).getLexicoERROR();
-            lexicoLST=lexico.getLexicoERROR();
+            //lexicoLST=lexico.getLexicoERROR();
+            Responde resp= new Responde();
             //SI NO HAY ERRORES LEXICOS Y SINTACTICOS
+            
             if(lexicoLST.isEmpty()&&sintacticoLST.isEmpty()){
                 
             
             Verificar semantico= new Verificar(usuarios,formularios,componentes);
+            
             semantico.AnalisisUsuarios();
             //analiza los formularios
 
@@ -55,21 +59,55 @@ public class AnalizaIndigo implements Serializable {
             //CREAR COMPONENTES
             semantico.AnalisisComponentes();
             //verifica si hay errores semanticos
-                System.out.println("HAY ERRORES");
+            if(semantico.getLstErrSementico().size()>0){
+                for(int k=0;k<semantico.getLstErrSementico().size();k++ ){
+                    //resp.startClient(semantico.getLstErrSementico().get(k));
+                    reporteFinal+=semantico.getLstErrSementico().get(k);
+                }
+                
+            }
             semantico.HayErrores();
             //guarda los USUARIOS A CREAR
-            System.out.println("GUARDA USUARIOS");
-            semantico.guardarUsuarios();
+            
+            semantico.GenerarDocUsuario();
             //elimina los usuarios
-            System.out.println("ELIMINA USUARIOS");
-            semantico.eliminarUsuarios();
+            
+            semantico.EliminarUser();
             //modifica usuarios
-            System.out.println("MODIFICA USUARIOS ");
-            semantico.modificarUsuarios();
+            semantico.ModifUser();
+
+            //semantico.modificarUsuarios();
             //elimina formularios
-            System.out.println("ELIMINA FORMULARIOS");
             semantico.eliminarFormularios();
-            System.out.println("ELIMINA FORMULARIOS");
+
+            
+            
+            semantico.getINFO();
+            for(int l=0;l<semantico.getINFO().size();l++){
+                reporteFinal+=semantico.getINFO().get(l)+"\n";
+            }
+            
+            
+            System.out.println(reporteFinal);
+            resp.startClient(reporteFinal);
+            
+            }else{
+                
+                if(lexicoLST.size()>0){
+                    for(int m=0;m<lexicoLST.size();m++){
+                        //resp.startClient("Error LEXICO Token:"+lexicoLST.get(m).getToken()+" Linea: "+lexicoLST.get(m).getLinea()+" Columna: "+lexicoLST.get(m).getColumna());
+                        reporteFinal+="Error LEXICO Token:"+lexicoLST.get(m).getToken()+" Linea: "+lexicoLST.get(m).getLinea()+" Columna: "+lexicoLST.get(m).getColumna()+"\n";
+                       
+                }
+                }
+                if(sintacticoLST.size()>0){
+                    for(int m=0;m<sintacticoLST.size();m++){
+                        //resp.startClient("Error SINTACTICO se esperaba: "+sintacticoLST.get(m).getTokenEsperado()+" Linea: "+sintacticoLST.get(m).getLinea()+" Columna: "+sintacticoLST.get(m).getColumna()+" CONFLICTO en: "+sintacticoLST.get(m).getValor());
+                        reporteFinal+="Error SINTACTICO se esperaba: "+sintacticoLST.get(m).getTokenEsperado()+" COLUMNA: "+sintacticoLST.get(m).getValor()+" LINEA:: "+sintacticoLST.get(m).getColumna()+" CONFLICTO en: "+sintacticoLST.get(m).getLinea()+"\n";
+                        
+                    }
+                }
+                 resp.startClient(reporteFinal);
             
             }
             //System.out.println(parser.getSintacticoERROR().size()+"NUMERO TOTAL");

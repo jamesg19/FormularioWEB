@@ -34,18 +34,17 @@
         <form action="login" method="POST" >
             <br>
             <br>
-            <br>
             <div align="center" >
                 <div  class="rows"></div>
             <div  class="form-group" align="center">
                 <h3>Ingresa tu usuario y password en FORMATO INDIGO</h3>
                 <br>
                 <br>
-                <textarea align="center" class="form-control" id="area" name="area" rows="8" cols="1"></textarea>
+                <textarea align="center" class="form-control" id="area" name="area" rows="10" cols="1"></textarea>
             </div>
                 
                 <br>
-                <br>
+
                 <button type="submit" class="btn btn-info">Iniciar Sesion</button>
                 <button type="button" onclick="limpiar()" class="btn btn-secondary">Limpiar Area Texto</button>
 

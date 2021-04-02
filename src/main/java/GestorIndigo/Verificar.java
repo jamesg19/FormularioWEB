@@ -5,14 +5,19 @@
  */
 package GestorIndigo;
 
+import AnalizadorUsuario.LexerU;
+import AnalizadorUsuario.parserU;
 import ComponentesIndigo.*;
 import FormSolicitudIndigo.*;
 import UsuarioIndigo.*;
 import ComponentesHTML.*;
 import File.ReadFormSaved;
+import java.io.StringReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -54,9 +59,9 @@ public class Verificar {
                 if(crearU.getUsuario()!=null&& crearU.getPassword()!=null){
                     System.out.println(crearU.getUsuario());
                     System.out.println(crearU.getPassword());
-                    if(crearU.getFechaCreacion()==null){
+                    
                         crearU.setFechaCreacion(timeStamp);
-                    }
+                    
                     user_Crear.add(crearU);
                 }else{
                     lstErrSementico.add("NO SE AGREGARON PARAMETROS OBLIGATORIOS EN CREACION DE USUARIO ");
@@ -140,8 +145,6 @@ public class Verificar {
 
             }
 
-            
-            
             
             else if (formularios.get(i) instanceof ModificarForm) {
                 ModificarForm modif = (ModificarForm) formularios.get(i);
@@ -769,17 +772,7 @@ public class Verificar {
                 } else {
                     //NO SE DEFINIO LA CLASE ERRORRRR
                 }
-
             }
-                
-            
-            
-            
-            
-            
-            
-            
-
         }
     }
     
@@ -825,6 +818,7 @@ public class Verificar {
                     if(Comp_Crear.get(j).getId()!=null){
                         cc++;
                         FORMATO_FINAL+=FORMATO_COMP_P("ID",Comp_Crear.get(j).getId());
+                        INFO.add("SE HA AGREGADO EL COMPONENTE: "+Comp_Crear.get(j).getId()+" al FORMULARIO: "+Form_a_Crear.get(i).getId());
                         if(cc==C){
                             
                         } else{
@@ -834,6 +828,7 @@ public class Verificar {
                     if(Comp_Crear.get(j).getNombreCampo()!=null){
                         cc++;
                         FORMATO_FINAL+=FORMATO_COMP_P("NOMBRE_CAMPO",Comp_Crear.get(j).getNombreCampo());
+                        
                         if(cc==C){
                             
                         } else{
@@ -941,6 +936,7 @@ public class Verificar {
                     
                     //GUARDA LOS DATOS OBTENIDOS DEL FORMULARIO Y COMPONENTES EN UN ARCHIVO .TXT CON EL FORMATO DATO
                     ReadFormSaved rd= new ReadFormSaved(Form_a_Crear.get(i).getId());
+                    INFO.add("SE HA CREADO EL FORMULARIO: "+Form_a_Crear.get(i).getId());
                     rd.GuardarArchivo(Form_a_Crear.get(i).getId(), FORMATO_FINAL);
                     
             
@@ -1009,119 +1005,294 @@ public class Verificar {
                             return c;
     }
     
-    public void guardarUsuarios(){
-        ArrayList<CrearUsuario> us = new ArrayList<CrearUsuario>();
-        ArrayList<String> lstIDusuarioG = new ArrayList<String>();
-        ArrayList<CrearUsuario> listaFinal = new ArrayList<CrearUsuario>();
-        String formato="";
-        
-        ReadFormSaved lec= new ReadFormSaved("");
-        //lec.guardaUserObjt(user_Crear);
-        
-        us=lec.leerUserobj();
-        //obtengo ID de usuarios registrados
-        for(int i=0;i<us.size();i++){
-            lstIDusuarioG.add(us.get(i).getUsuario());
-        }
-        //obtengo ID de usuarios a crear
-        for(int i=0;i<user_Crear.size();i++){
-            //si los ids de los usuarios guardados coincide con los ids nuevos no se crea el usuaio
-            if(lstIDusuarioG.contains(user_Crear.get(i).getUsuario())){
-                lstErrSementico.add("Error al crear un Nuevo Usuario-- "+user_Crear.get(i).getUsuario()+" \" YA EXISTE UN USUARIO REGISTRADO CON EL MISMO ID\"");
-            }else{
-                us.add(user_Crear.get(i));
-                INFO.add("SE HA AGREGADO EL USUARIO CON ID: "+us.get(i).getUsuario());
-            }   
-        }
-        lec.guardaUserObjt(us);
-        
-        
-    }
-    public void eliminarUsuarios(){
-        
-        ArrayList<CrearUsuario> us = new ArrayList<CrearUsuario>();
-        ArrayList<String> lstIDusuarioG = new ArrayList<String>();
-        ArrayList<CrearUsuario> listaFinal = new ArrayList<CrearUsuario>();
+//    public void guardarUsuarios(){
+//        ArrayList<CrearUsuario> us = new ArrayList<CrearUsuario>();
+//        ArrayList<String> lstIDusuarioG = new ArrayList<String>();
+//        ArrayList<CrearUsuario> listaFinal = new ArrayList<CrearUsuario>();
 //        String formato="";
-        //user_Delete
-        ReadFormSaved lec= new ReadFormSaved("");
-
-        
-        us=lec.leerUserobj();
-        //obtengo ID de usuarios registrados
-        for(int i=0;i<us.size();i++){
-            lstIDusuarioG.add(us.get(i).getUsuario());
-        }
-        //obtengo ID de usuarios a crear
-        for(int i=0;i<user_Delete.size();i++){
-            
-            for(int j=0;j<us.size();j++){
-                if(user_Delete.get(i).getUsuario().equals(us.get(j).getUsuario())){
-                    INFO.add("SE HA ELIMINADO EL USUARIO CON ID: "+us.get(j).getUsuario());
-                    System.out.println("SE HA ELIMINADO EL USUARIO CON ID: "+us.get(j).getUsuario());
-                } else{
-                    listaFinal.add(us.get(j));
-                }
-            }
-  
-        }
-        lec.guardaUserObjt(listaFinal);
-        
-        
-    }
+//        
+//        ReadFormSaved lec= new ReadFormSaved("");
+//        //lec.guardaUserObjt(user_Crear);
+//        
+//        us=lec.leerUserobj();
+//        //obtengo ID de usuarios registrados
+//        for(int i=0;i<us.size();i++){
+//            lstIDusuarioG.add(us.get(i).getUsuario());
+//        }
+//        //obtengo ID de usuarios a crear
+//        for(int i=0;i<user_Crear.size();i++){
+//            //si los ids de los usuarios guardados coincide con los ids nuevos no se crea el usuaio
+//            if(lstIDusuarioG.contains(user_Crear.get(i).getUsuario())){
+//                lstErrSementico.add("Error al crear un Nuevo Usuario-- "+user_Crear.get(i).getUsuario()+" \" YA EXISTE UN USUARIO REGISTRADO CON EL MISMO ID\"");
+//            }else{
+//                us.add(user_Crear.get(i));
+//                INFO.add("SE HA AGREGADO EL USUARIO CON ID: "+us.get(i).getUsuario());
+//            }   
+//        }
+//        lec.guardaUserObjt(us);
+//        
+//        
+//    }
+//    public void eliminarUsuarios(){
+//        
+//        ArrayList<CrearUsuario> us = new ArrayList<CrearUsuario>();
+//        ArrayList<String> lstIDusuarioG = new ArrayList<String>();
+//        ArrayList<CrearUsuario> listaFinal = new ArrayList<CrearUsuario>();
+////        String formato="";
+//        //user_Delete
+//        ReadFormSaved lec= new ReadFormSaved("");
+//
+//        
+//        us=lec.leerUserobj();
+//        //obtengo ID de usuarios registrados
+//        for(int i=0;i<us.size();i++){
+//            lstIDusuarioG.add(us.get(i).getUsuario());
+//        }
+//        //obtengo ID de usuarios a crear
+//        for(int i=0;i<user_Delete.size();i++){
+//            
+//            for(int j=0;j<us.size();j++){
+//                if(user_Delete.get(i).getUsuario().equals(us.get(j).getUsuario())){
+//                    INFO.add("SE HA ELIMINADO EL USUARIO CON ID: "+us.get(j).getUsuario());
+//                    System.out.println("SE HA ELIMINADO EL USUARIO CON ID: "+us.get(j).getUsuario());
+//                } else{
+//                    listaFinal.add(us.get(j));
+//                }
+//            }
+//  
+//        }
+//        lec.guardaUserObjt(listaFinal);
+//        
+//        
+//    }
     
     
-    public void modificarUsuarios(){
-        try{
-        ArrayList<CrearUsuario> us = new ArrayList<CrearUsuario>();
-        ArrayList<String> lstIDusuarioG = new ArrayList<String>();
-        ArrayList<CrearUsuario> listaFinal = new ArrayList<CrearUsuario>();
-        String formato="";
-            
-        ReadFormSaved lec= new ReadFormSaved("");
-        us=lec.leerUserobj();
-        
-        //obtengo ID de usuarios registrados
-        for(int i=0;i<us.size();i++){
-            lstIDusuarioG.add(us.get(i).getUsuario());
-        }
-        System.out.println("    PASA FOR 1");
-        //obtengo ID de usuarios a modificar
-        for (int i = 0; i < user_Modif.size(); i++) {
-            System.out.println("    ENTRA FOR 2");
-            for (int j = 0; j < us.size(); j++) {
-                System.out.println("CANTIDAD DE US.SIZE:  "+us.size());
-                System.out.println("    PASA FOR 3");
-                if (us.get(j).getUsuario().equals(user_Modif.get(i).getUsuarioAnt().trim()) && !lstIDusuarioG.contains(user_Modif.get(i).getUsuarioNue().trim())) {
-                    us.get(j).setPassword(user_Modif.get(i).getNuevoPass());
-                    us.get(j).setUsuario(user_Modif.get(i).getUsuarioNue());
-                    us.get(j).setFechaModif(timeStamp);
-                    INFO.add("SE HA MODIFICADO EL USUARIO CON ID: " + us.get(i).getUsuario());
-                } else {
-                    //us.add(user_Crear.get(i));
-                    INFO.add("NO SE MODIFICO EL USUARIO CON ID: " + us.get(i).getUsuario());
-                    INFO.add("1) EL USUARIO ACTUAL NO COINCIDE CON EL USUARIO ANTIGUO O 2) EL NUEVO USUARIO YA ESTA EN USO");
-                }
-            }
-            
-
-        }
-        System.out.println("   GUARDA");
-        lec.guardaUserObjt(us);
-        } catch(Exception e){
-            System.out.println("error en MODIFICAR USUARIOS" +e);
-        }
-    }
+//    public void modificarUsuarios(){
+//        try{
+//        ArrayList<CrearUsuario> us = new ArrayList<CrearUsuario>();
+//        ArrayList<String> lstIDusuarioG = new ArrayList<String>();
+//        ArrayList<CrearUsuario> listaFinal = new ArrayList<CrearUsuario>();
+//        String formato="";
+//            
+//        ReadFormSaved lec= new ReadFormSaved("");
+//        us=lec.leerUserobj();
+//        
+//        //obtengo ID de usuarios registrados
+//        for(int i=0;i<us.size();i++){
+//            lstIDusuarioG.add(us.get(i).getUsuario());
+//        }
+//        System.out.println("    PASA FOR 1");
+//        //obtengo ID de usuarios a modificar
+//        for (int i = 0; i < user_Modif.size(); i++) {
+//            System.out.println("    ENTRA FOR 2");
+//            for (int j = 0; j < us.size(); j++) {
+//                System.out.println("CANTIDAD DE US.SIZE:  "+us.size());
+//                System.out.println("    PASA FOR 3");
+//                if (us.get(j).getUsuario().equals(user_Modif.get(i).getUsuarioAnt().trim()) && !lstIDusuarioG.contains(user_Modif.get(i).getUsuarioNue().trim())) {
+//                    us.get(j).setPassword(user_Modif.get(i).getNuevoPass());
+//                    us.get(j).setUsuario(user_Modif.get(i).getUsuarioNue());
+//                    us.get(j).setFechaModif(timeStamp);
+//                    INFO.add("SE HA MODIFICADO EL USUARIO CON ID: " + us.get(i).getUsuario());
+//                } else {
+//                    //us.add(user_Crear.get(i));
+//                    INFO.add("NO SE MODIFICO EL USUARIO CON ID: " + us.get(i).getUsuario());
+//                    INFO.add("1) EL USUARIO ACTUAL NO COINCIDE CON EL USUARIO ANTIGUO O 2) EL NUEVO USUARIO YA ESTA EN USO");
+//                }
+//            }
+//            
+//
+//        }
+//        System.out.println("   GUARDA");
+//        lec.guardaUserObjt(us);
+//        } catch(Exception e){
+//            System.out.println("error en MODIFICAR USUARIOS" +e);
+//        }
+//    }
     public void eliminarFormularios(){
-        System.out.println("HA ENTRADO A ELIMINAR FORMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM");
+        
         for(int i=0;i<form_Delete.size();i++){
             ReadFormSaved eliminar= new ReadFormSaved("");
             INFO.add(eliminar.eliminarFicheroForm(form_Delete.get(i).getId().trim()));
-            System.out.println("SE HA ELIMINADO EL FORMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM");        
+                    
         }
         
     }
     
+    public void GenerarDocUsuario(){
+        String FormatoUsuario="";
+        int CantidadUsuarios=user_Crear.size();
+        int tot=0;
+        ReadFormSaved rd= new ReadFormSaved("");
+        FormatoUsuario+=rd.buscarUsuarios();
+        
+        if (user_Crear.size() > 0) {
+            FormatoUsuario += ",\n";
+
+            for (int i = 0; i < user_Crear.size(); i++) {
+                
+                tot++;
+                if (tot != CantidadUsuarios) {
+                    INFO.add("USUARIO CREADO EXITOSAMENTE: "+user_Crear.get(i).getUsuario());
+                    FormatoUsuario += "{ "
+                            + "\"USUARIO\": \""+user_Crear.get(i).getUsuario()+"\",\n"
+                            + "\"PASSWORD\":\""+user_Crear.get(i).getPassword()+"\",\n"
+                            + "\"FECHA_CREACION\":\""+user_Crear.get(i).getFechaCreacion()+"\"  \n"
+                            + "} ,\n";
+                } else {
+                    INFO.add("USUARIO CREADO EXITOSAMENTE: "+user_Crear.get(i).getUsuario());
+                    FormatoUsuario += "{ "
+                            + "\"USUARIO\": \"" +user_Crear.get(i).getUsuario()+"\",\n"
+                            + "\"PASSWORD\":\"" +user_Crear.get(i).getPassword()+"\",\n"
+                            + "\"FECHA_CREACION\":\""+user_Crear.get(i).getFechaCreacion()+"\"\n"
+                            + "} \n";
+                } 
+            }
+        }
+        rd.GuardarArchivoUsuario("USUARIO", FormatoUsuario);
+    }
+    
+    public void EliminarUser(){
+        ArrayList<CrearUsuario> lst = new ArrayList<CrearUsuario>();
+        ArrayList<CrearUsuario> lstFIn = new ArrayList<CrearUsuario>();
+        try {
+        String FormatoUsuario="";
+        ReadFormSaved rd= new ReadFormSaved("");
+        FormatoUsuario=rd.buscarUsuarios();
+        
+        StringReader readerr = new StringReader(FormatoUsuario);
+        LexerU lexico = new LexerU(readerr);
+        parserU parser = new parserU(lexico);
+        parser.parse();
+        lst=parser.getUsuarios();
+        recu(lst);
+        
+        
+       
+
+        
+        GenerarDocUsuarioE(lst);
+        } catch (Exception ex) {
+            Logger.getLogger(Verificar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        
+        
+    }
+    
+    public void recu(ArrayList<CrearUsuario> lst){
+        ArrayList<CrearUsuario> lst2;
+        for (int i = 0; i < lst.size(); i++) {
+            lst.get(i).setFechaCreacion(timeStamp);
+            for(int j=0;j<user_Delete.size();j++){
+                String a=lst.get(i).getUsuario();
+                String b=user_Delete.get(j).getUsuario();
+//                System.out.println(" COMPERA CON "+lst.get(i).getUsuario());
+//                System.out.print(" COMPERA CON "+user_Delete.get(j).getUsuario());
+                if (a.equals(b)){
+                    INFO.add("USUARIO ELIMINADO EXITOSAMENTE: "+a);
+                    lst.remove(i);
+                    user_Delete.remove(j);
+                    lst2=lst;
+                    INFO.add("SE HA ELIMINADO EL USUARIO: "+a);
+                    recu(lst2);
+                    
+                }else{
+                    
+                }
+            }
+        }
+        
+    }
+    public void ModifUser(){
+        ArrayList<CrearUsuario> lst = new ArrayList<CrearUsuario>();
+        ArrayList<CrearUsuario> lstFIn = new ArrayList<CrearUsuario>();
+        try {
+        String FormatoUsuario="";
+        ReadFormSaved rd= new ReadFormSaved("");
+        FormatoUsuario=rd.buscarUsuarios();
+        
+        StringReader readerr = new StringReader(FormatoUsuario);
+        LexerU lexico = new LexerU(readerr);
+        parserU parser = new parserU(lexico);
+        parser.parse();
+        lst=parser.getUsuarios();
+        recu2(lst);
+        
+        
+       
+        GenerarDocUsuarioE(lst);
+        
+        
+        } catch (Exception ex) {
+            Logger.getLogger(Verificar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        
+    }
+    public void recu2(ArrayList<CrearUsuario> lst){
+        ArrayList<CrearUsuario> lst2;
+        for (int i = 0; i < lst.size(); i++) {
+            lst.get(i).setFechaCreacion(timeStamp);
+            for(int j=0;j<user_Modif.size();j++){
+                String a=lst.get(i).getUsuario();
+                String b=user_Modif.get(j).getUsuarioAnt();
+                System.out.println("A: "+a+" B: "+b);
+                if (a.equals(b)){
+                    lst.get(i).setPassword(user_Modif.get(j).getNuevoPass());
+                    lst.get(i).setUsuario(user_Modif.get(j).getUsuarioNue());
+                    user_Modif.remove(j);
+                    lst2=lst;
+                    INFO.add("SE HA MODIFICADO EL USUARIO: "+a+" POR "+user_Modif.get(j).getUsuarioNue());
+                    recu2(lst2);
+                    
+                }else{
+                    
+                }
+            }
+        } 
+    }
+    
+    public void GenerarDocUsuarioE(ArrayList<CrearUsuario> lst){
+        String FormatoUsuario1="";
+        int CantidadUsuarios=lst.size();
+        int tot=0;
+        ReadFormSaved rd= new ReadFormSaved("");
+        //FormatoUsuario1+=rd.buscarUsuarios();
+        
+        if (lst.size() > 0) {
+            //FormatoUsuario1 += ",\n";
+            FormatoUsuario1=" ";
+            for (int i = 0; i < lst.size(); i++) {
+                
+                tot++;
+                if (tot != CantidadUsuarios) {
+                    FormatoUsuario1 += "{ "
+                            + "\"USUARIO\": \""+lst.get(i).getUsuario()+"\",\n"
+                            + "\"PASSWORD\":\""+lst.get(i).getPassword()+"\",\n"
+                            + "\"FECHA_CREACION\":\""+lst.get(i).getFechaCreacion()+"\"\n"
+                            + "} ,\n";
+                } else {
+                    FormatoUsuario1 += "{ "
+                            + "\"USUARIO\": \"" +lst.get(i).getUsuario()+"\",\n"
+                            + "\"PASSWORD\":\"" +lst.get(i).getPassword()+"\",\n"
+                            + "\"FECHA_CREACION\":\""+lst.get(i).getFechaCreacion()+"\"\n"
+                            + "} \n";
+                } 
+            }
+        }
+        rd.GuardarArchivoUsuario("USUARIO", FormatoUsuario1);
+    }
+    public boolean loginUsuario(){
+        boolean bandera=false;
+        
+        
+        
+        
+        
+        return bandera;
+    } 
 
     public ArrayList<Usuario> getUsuarios() {
         return usuarios;

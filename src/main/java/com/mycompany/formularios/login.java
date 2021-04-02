@@ -55,12 +55,16 @@ public class login extends HttpServlet {
                 ReadFormSaved leer = new ReadFormSaved("");
                 leer.mostrarUsuarios();
                 gst.consulta_Login();
-                sintactico = gst.getSintactico();
+                
+                //OBTENGO LOS ERRORES
                 lexicoLST = gst.getLexicoLST();
+                sintactico = gst.getSintactico();
+                
 
                 // si no hay errores busca ingresar y que coincidan usuario y password
                 if (sintactico.isEmpty() && lexicoLST.isEmpty()) {
-                    if (gst.buscarUsuarioenDB()) {
+                    
+                    if (gst.buscarUsuario()) {
 
                         request.getRequestDispatcher("/MyForms.jsp").forward(request, response);
                     } else {
@@ -77,7 +81,7 @@ public class login extends HttpServlet {
                     }
                     for (int j = 0; j < lexicoLST.size(); j++) {
                         error += "ERROR LEXICO\n";
-                        error += "TOKEN: " + lexicoLST.get(j).getToken() + " LINEA: " + lexicoLST.get(j).getLinea() + " COLUMNA: " + lexicoLST.get(j).getColumna();
+                        error += "TOKEN: " + lexicoLST.get(j).getToken() + " LINEA: " + lexicoLST.get(j).getLinea() + " COLUMNA: " + lexicoLST.get(j).getColumna()+"\n";
                     }
 
                     request.setAttribute("MENSAJE", error);

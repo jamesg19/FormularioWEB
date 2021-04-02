@@ -205,26 +205,59 @@ public class ReadFormSaved {
 
             usuariosGuardados=(ArrayList<CrearUsuario>) recupera.readObject();
             recupera.close();
-            for(int i=0;i<usuariosGuardados.size();i++){
-                System.out.println(" USUARIOS ENONTRADO "+usuariosGuardados.get(i).getUsuario());
-                System.out.println(" PASSWORD ENONTRADO "+usuariosGuardados.get(i).getPassword());
-                
-            }
+
         
         } catch (FileNotFoundException ex) {
-            System.out.println("3\n3\n3\n3\n"+ex);
+            
             //Logger.getLogger(ReadFormSaved.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            System.out.println("1\n1\n1\n"+ex);
+            
             //Logger.getLogger(ReadFormSaved.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
-            System.out.println("2\n2\n2\n2\n"+ex);
+           
             //Logger.getLogger(ReadFormSaved.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         
     }
-    
+    public String buscarUsuarios(){
+        String formato="";
+        String fichero=PathFijo+"USUARIO"+".txt";
+        try{
+        archivo= new File(fichero);
+            if (archivo.canRead()) {
+                
+                    String documento = AbrirArchivo(archivo);
+                    formato=documento;
+                    return formato;
+                    //JOptionPane.showMessageDialog(null, ContenidoArchivo);
+                
+            } else{
+                return formato;
+            }
+        } catch(Exception e){
+            return formato;
+            
+        }
+    }
+    public boolean GuardarArchivoUsuario(String id, String documento) {
+        String mensaje = null;
+        boolean bandera=false;
+        try {
+            File fil= new File(PathFijo+id+".txt");
+            salida = new FileOutputStream(fil);
+            byte[] bytxt = documento.getBytes();
+            salida.write(bytxt);
+            salida.close();
+            bandera=true;
+            salida.close();
+        } catch (Exception e) {
+
+        }
+
+        return bandera;
+    }
+
     public String getContenidoArchivo() {
         return ContenidoArchivo;
     }

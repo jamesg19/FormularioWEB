@@ -24,10 +24,11 @@
             <div><a class="navbar-brand" style="padding:0px;margin-left:0px;height:78px;" href="#"> <img class="img-fluid" src="Resources/img/expansion.png"></a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button></div>
             <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="navbar-nav ml-auto" style="margin-top:13px;">
-                    <li class="nav-item"><a class="nav-link" uk-scroll="offset:50" href="">James Forms LLC.</a></li>
-                    <li class="nav-item"><a class="nav-link" uk-scroll="offset:100" href="">Bienvenido</a></li>
-                    <li class="nav-item"><a class="nav-link" uk-scroll="offset:100" href="">Formularios</a></li>
-                    <li class="nav-item"><a class="nav-link" uk-scroll="offset:50" href="">Compiladores 1 2021</a></li>
+                    <li class="nav-item"><a class="nav-link" uk-scroll="offset:50" >James Forms LLC.</a></li>
+                    <li class="nav-item"><a class="nav-link" uk-scroll="offset:100" >Bienvenido a</a></li>
+                    <li class="nav-item"><a class="nav-link" uk-scroll="offset:100" >Formularios</a></li>
+                    <li class="nav-item"><a class="nav-link" uk-scroll="offset:50" >Compiladores 1 2021</a></li>
+                    <li class="nav-item"><a class="nav-link" uk-scroll="offset:50" href="login.jsp" >SALIR</a></li>
                 </ul>
             </div>
         </div>

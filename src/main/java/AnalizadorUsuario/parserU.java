@@ -10,7 +10,7 @@ import java_cup.runtime.XMLElement;
 import java.util.ArrayList;
 import FormSolicitudIndigo.*;
 import ComponentesIndigo.*;
-import UsuarioIndigo.CrearUsuario;
+import UsuarioIndigo.*;
 import java_cup.runtime.XMLElement;
 
 /** CUP v0.11b 20160615 (GIT 4ac7450) generated parser.
@@ -219,7 +219,7 @@ class CUP$parserU$actions {
           case 3: // DB_Form ::= Llave_L BLOQUE_DB Llave_R 
             {
               Object RESULT =null;
-		 lst.add(objCrearUsuario);  objCrearUsuario= new CrearUsuario(); 
+
               CUP$parserU$result = parser.getSymbolFactory().newSymbol("DB_Form",5, ((java_cup.runtime.Symbol)CUP$parserU$stack.elementAt(CUP$parserU$top-2)), ((java_cup.runtime.Symbol)CUP$parserU$stack.peek()), RESULT);
             }
           return CUP$parserU$result;
@@ -257,16 +257,16 @@ objCrearUsuario.setPassword(a.toString());
               Object RESULT =null;
               // propagate RESULT from NT$1
                 RESULT = (Object) ((java_cup.runtime.Symbol) CUP$parserU$stack.elementAt(CUP$parserU$top-7)).value;
-		int aaleft = ((java_cup.runtime.Symbol)CUP$parserU$stack.elementAt(CUP$parserU$top-19)).left;
-		int aaright = ((java_cup.runtime.Symbol)CUP$parserU$stack.elementAt(CUP$parserU$top-19)).right;
-		Object aa = (Object)((java_cup.runtime.Symbol) CUP$parserU$stack.elementAt(CUP$parserU$top-19)).value;
-		int aleft = ((java_cup.runtime.Symbol)CUP$parserU$stack.elementAt(CUP$parserU$top-10)).left;
-		int aright = ((java_cup.runtime.Symbol)CUP$parserU$stack.elementAt(CUP$parserU$top-10)).right;
-		Object a = (Object)((java_cup.runtime.Symbol) CUP$parserU$stack.elementAt(CUP$parserU$top-10)).value;
-		int fleft = ((java_cup.runtime.Symbol)CUP$parserU$stack.elementAt(CUP$parserU$top-1)).left;
-		int fright = ((java_cup.runtime.Symbol)CUP$parserU$stack.elementAt(CUP$parserU$top-1)).right;
-		Object f = (Object)((java_cup.runtime.Symbol) CUP$parserU$stack.elementAt(CUP$parserU$top-1)).value;
-		objCrearUsuario.setFechaCreacion(f.toString());
+		int aaleft = ((java_cup.runtime.Symbol)CUP$parserU$stack.elementAt(CUP$parserU$top-20)).left;
+		int aaright = ((java_cup.runtime.Symbol)CUP$parserU$stack.elementAt(CUP$parserU$top-20)).right;
+		Object aa = (Object)((java_cup.runtime.Symbol) CUP$parserU$stack.elementAt(CUP$parserU$top-20)).value;
+		int aleft = ((java_cup.runtime.Symbol)CUP$parserU$stack.elementAt(CUP$parserU$top-11)).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$parserU$stack.elementAt(CUP$parserU$top-11)).right;
+		Object a = (Object)((java_cup.runtime.Symbol) CUP$parserU$stack.elementAt(CUP$parserU$top-11)).value;
+		int fleft = ((java_cup.runtime.Symbol)CUP$parserU$stack.elementAt(CUP$parserU$top-2)).left;
+		int fright = ((java_cup.runtime.Symbol)CUP$parserU$stack.elementAt(CUP$parserU$top-2)).right;
+		Object f = (Object)((java_cup.runtime.Symbol) CUP$parserU$stack.elementAt(CUP$parserU$top-2)).value;
+		objCrearUsuario.setFechaCreacion(f.toString()); lst.add(objCrearUsuario);  objCrearUsuario= new CrearUsuario(); 
               CUP$parserU$result = parser.getSymbolFactory().newSymbol("BLOQUE_DB",6, ((java_cup.runtime.Symbol)CUP$parserU$stack.elementAt(CUP$parserU$top-24)), ((java_cup.runtime.Symbol)CUP$parserU$stack.peek()), RESULT);
             }
           return CUP$parserU$result;

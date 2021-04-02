@@ -7,10 +7,13 @@ package GestorLogin;
 
 import AnalizadorDB.LexerDB;
 import AnalizadorLogin.parserLogin;
+import AnalizadorUsuario.LexerU;
+import AnalizadorUsuario.parserU;
 import Analizadores.LexerCup;
 import File.ReadFormSaved;
 import GestorIndigo.ErrorLexico;
 import GestorIndigo.ErrorSintactico;
+import GestorIndigo.Verificar;
 import UsuarioIndigo.CrearUsuario;
 import UsuarioIndigo.LoginUsuario;
 import com.mycompany.formularios.login;
@@ -26,6 +29,7 @@ import java.util.logging.Logger;
 public class GestorLogin {
     ArrayList<ErrorSintactico> sintactico = new ArrayList<ErrorSintactico>();
     ArrayList<ErrorLexico> lexicoLST = new ArrayList<ErrorLexico>();
+    LoginUsuario objLogin= new LoginUsuario();
     LoginUsuario log;
     private String codigo;
 
@@ -41,6 +45,7 @@ public class GestorLogin {
             LexerCup lexico = new LexerCup(readerr);
             parserLogin parser = new parserLogin(lexico);
             parser.parse();
+            objLogin=parser.getLogin();
             lexicoLST=lexico.getLexicoERROR();
             sintactico=parser.getSintacticoERROR();
             //obtiene los datos recopilados con la gramatica correcta
@@ -67,6 +72,37 @@ public class GestorLogin {
             return existe;
         }
 
+    }
+    public boolean buscarUsuario(){
+        boolean bandera=false;
+        ArrayList<CrearUsuario> lst = new ArrayList<CrearUsuario>();
+        ArrayList<CrearUsuario> lstFIn = new ArrayList<CrearUsuario>();
+        try {
+        String FormatoUsuario="";
+        ReadFormSaved rd= new ReadFormSaved("");
+        FormatoUsuario=rd.buscarUsuarios();
+        
+        StringReader readerr = new StringReader(FormatoUsuario);
+        LexerU lexico = new LexerU(readerr);
+        parserU parser = new parserU(lexico);
+        parser.parse();
+        lst=parser.getUsuarios();
+        
+        for(int i=0;i<lst.size();i++){
+            if(lst.get(i).getUsuario().equals(objLogin.getUsuario()) && lst.get(i).getPassword().equals(objLogin.getPassword())    ){
+                return true;
+            }
+            
+        }
+        
+       
+        
+        
+        return bandera;
+        } catch (Exception ex) {
+            return bandera;
+            //Logger.getLogger(login.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     

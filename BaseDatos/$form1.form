@@ -1,0 +1,81 @@
+db.formularios(
+  
+ { 
+ 
+    "ID_FORMULARIO": "$form1",  
+    "TITULO": "Formulario de Aduana",
+    "NOMBRE": "formulario_encuesta_1",
+    "TEMA": "Dark",
+    "USUARIO_CREACION": "james",
+    "FECHA_CREACION":"2021-04-02"
+      "ESTRUCTURA":
+ (
+
+{"ID": "$Df3",
+"NOMBRE_CAMPO": "Pais",
+"CLASE": "COMBO",
+"INDICE": "1",
+"TEXTO_VISIBLE": "Pfd",
+"ALINEACION": "CENTRO",
+"REQUERIDO": "SI",
+"OPCIONES": "Guatema | H"
+},
+{"ID": "$Df2",
+"NOMBRE_CAMPO": "Pais",
+"CLASE": "COMBO",
+"INDICE": "2",
+"TEXTO_VISIBLE": "Seleccione el pais de origen",
+"ALINEACION": "CENTRO",
+"REQUERIDO": "SI",
+"OPCIONES": "United Kingdom | Irlanda | Francia | United States"
+},
+{"ID": "$Df2",
+"NOMBRE_CAMPO": "Pais",
+"CLASE": "CHECKBOX",
+"INDICE": "3",
+"TEXTO_VISIBLE": "Seleccione el pais destino",
+"ALINEACION": "CENTRO",
+"REQUERIDO": "SI",
+"OPCIONES": "Espana | Hungria | Suiza| Blangadesh"
+},
+{"ID": "$Df2",
+"NOMBRE_CAMPO": "Pais",
+"CLASE": "COMBO",
+"INDICE": "4",
+"TEXTO_VISIBLE": "Pfd",
+"ALINEACION": "CENTRO",
+"REQUERIDO": "SI",
+"OPCIONES": "Guatema"
+},
+{"ID": "$Df33",
+"NOMBRE_CAMPO": "Apellido",
+"CLASE": "RADIO",
+"INDICE": "5",
+"TEXTO_VISIBLE": "Ingrese los articulo que lleva en el vuelo ",
+"ALINEACION": "DERECHA",
+"REQUERIDO": "SI",
+"OPCIONES": "Comida | Alcohol| Tabaco| frutas exoticas"
+},
+{"ID": "$Df44",
+"CLASE": "BOTON",
+"INDICE": "6",
+"TEXTO_VISIBLE": "Enviar Info",
+"ALINEACION": "DERECHA"
+},
+{"ID": "$Df44",
+"CLASE": "IMAGEN",
+"INDICE": "7",
+"TEXTO_VISIBLE": "Enviar Info",
+"URL": "https://i.pinimg.com/originals/6b/9a/b4/6b9ab4a263d7aff979f1a7a7858799b2.jpg"
+},
+{"ID": "$Df66",
+"NOMBRE_CAMPO": "doc",
+"CLASE": "FICHERO",
+"INDICE": "8",
+"TEXTO_VISIBLE": "Ingrese el pasaporte en pdf",
+"ALINEACION": "CENTRO",
+"REQUERIDO": "SI"
+} 
+ ) 
+ }
+ )

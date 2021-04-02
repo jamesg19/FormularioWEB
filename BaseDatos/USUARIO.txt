@@ -1,0 +1,36 @@
+ { "USUARIO": "James123",
+"PASSWORD":"SADAa5",
+"FECHA_CREACION":"2021-04-02"
+} ,
+{ "USUARIO": "james1",
+"PASSWORD":"admin1",
+"FECHA_CREACION":"2021-04-02"
+} ,
+{ "USUARIO": "james33333",
+"PASSWORD":"NuevoPassrow451",
+"FECHA_CREACION":"2021-04-02"
+} ,
+{ "USUARIO": "james1",
+"PASSWORD":"admin1",
+"FECHA_CREACION":"2021-04-02"
+} ,
+{ "USUARIO": "james2",
+"PASSWORD":"admin2",
+"FECHA_CREACION":"2021-04-02"
+} ,
+{ "USUARIO": "james1",
+"PASSWORD":"admin1",
+"FECHA_CREACION":"2021-04-02"
+} ,
+{ "USUARIO": "james2",
+"PASSWORD":"admin2",
+"FECHA_CREACION":"2021-04-02"
+} ,
+{ "USUARIO": "james1",
+"PASSWORD":"admin1",
+"FECHA_CREACION":"2021-04-02"
+} ,
+{ "USUARIO": "james2",
+"PASSWORD":"admin2",
+"FECHA_CREACION":"2021-04-02"
+} 
