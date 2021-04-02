@@ -1,0 +1,166 @@
+/*JAMES GRAMAJO COMPILADORES1 201731172*/
+package AnalizadorDB;
+import java_cup.runtime.Symbol;
+import java_cup.runtime.XMLElement;
+import java.util.ArrayList;
+import FormSolicitudIndigo.*;
+import ComponentesIndigo.*;
+class parserDB;
+parser code
+{:	
+	Formulario formR= new Formulario();
+	Componente compR= new Componente();
+	ArrayList<Formulario> lstFormulario = new ArrayList<Formulario>();
+	ArrayList<Componente>  lstComponente = new ArrayList<Componente>();
+
+	//constructor
+	private Symbol sym;
+    int contCreaUser=0;
+    public Symbol getS(){
+        return this.sym;
+    }
+	public parserDB( LexerDB lex){
+	 super(lex);
+	}
+	public void report_error(String message, Object info){
+		System.out.println("\nREPORT ERROR");
+	}
+	public void report_fatal_error(String message, Object info){
+		System.out.println("\nREPORT FATAL");
+	}
+	
+	public void syntax_error(Symbol cur_token) {
+        System.out.println(symbl_name_from_id(expected_token_ids().get(0)));
+        System.out.println("syntaxerr: " + symbl_name_from_id(cur_token.sym) +" Columna: "+cur_token.right+" Linea: "+cur_token.left+" Valor:"+cur_token.value);
+    }
+	protected int error_sync_size() {
+        return 1;
+    }
+	public ArrayList<Formulario> getLstFormulario() {
+        return lstFormulario;
+    }
+	public ArrayList<Componente> getLstComponente() {
+        return lstComponente;
+    }
+
+:};
+//Llave_a, Llave_c, Corchete_a, Corchete_c, P_coma,Identificador,Igual
+
+terminal DipleL, DipleR, Exclamation, IniSolicitudes, FinSolicitudes, IniSolicitud, FinSolicitud,
+Parentesis_L, Parentesis_R, Corchete_L, Corchete_R, Llave_L, Llave_R, Separador,
+DosP, Coma, Comilla, CredencialUser, CrearUsuario, Usuario, Password, ModificarUser, UserAntiguo,
+UserNuevo, FechaModif, EliminarUsuario, Login, NuevoPassword, FechaF;
+
+terminal ParametroForm, NuevoFormulario, ID, TituloForm, NombreForm, TemaForm, UserCreacion, FechaCreacion, EliminarForm, ModificarForm, 
+TDark, TBlue, TWhite;
+
+terminal Allids, Numeros, Letras;
+
+terminal ParametrosComponente, AgregarComponente, EliminarComponente, ModificarComponente, NombreCampo, Formulario, Clase, CampoTexto, AreaTexto, Checkbox, Radio , Fichero, Imagen, 
+Combo, Boton, Indice, TextoVisible, Alineacion, Centro, Izquierda, Derecha, Justificar, Requerido, Si, No, Opciones, Filas, Columnas, Url;
+terminal InicioGuardaForm, IdFormulario, Estructura, DatosRecopilados, EXP_user_pass, Textos, DirURL;
+/* No terminales */	 
+non terminal ESTADO_INICIAL;
+
+non terminal TEMAS, CLASESCOMPONENTES, REQUERIDO; 
+
+non terminal  ALINEACIONES;
+non terminal  DB_Form, BLOQUE_DB, STRUCT, BLOQUE_STRUCT, BLOQUE_STRUCT_2, DB1, BS_TEMP, TEXTOS;
+/*donde se inician las instrucciones*/
+start with ESTADO_INICIAL;
+
+ESTADO_INICIAL::=
+	DB_Form
+;
+DB_Form::=
+
+InicioGuardaForm Parentesis_L Llave_L BLOQUE_DB Llave_R Parentesis_R
+
+;
+BLOQUE_DB::=
+	Comilla IdFormulario Comilla DosP Comilla Allids:ids Comilla Coma 
+	Comilla TituloForm Comilla DosP Comilla TEXTOS:title Comilla Coma
+	Comilla NombreForm Comilla DosP Comilla EXP_user_pass:nom Comilla Coma
+	Comilla TemaForm Comilla DosP Comilla TEMAS:tem Comilla Coma
+	Comilla UserCreacion Comilla DosP Comilla TEXTOS:user Comilla Coma
+	Comilla FechaCreacion Comilla DosP Comilla FechaF:fech Comilla 
+	STRUCT 
+	{:formR.setId(ids.toString()); 
+	formR.setTitulo(title.toString()); 
+	formR.setTema(tem.toString()); 
+	formR.setNombre(nom.toString()); 
+	formR.setUsuarioCreacion(user.toString()); 
+	formR.setFechaCreacion(fech.toString());           
+	lstFormulario.add(formR);:}
+
+
+;
+STRUCT::=
+	Comilla Estructura Comilla DosP Parentesis_L 
+	BS_TEMP
+	Parentesis_R Coma
+	DatosRecopilados 
+	| Comilla Estructura Comilla DosP Parentesis_L 
+	BS_TEMP
+	Parentesis_R 
+	
+;
+BS_TEMP::=
+	BLOQUE_STRUCT Coma BS_TEMP
+	| BLOQUE_STRUCT
+;
+BLOQUE_STRUCT::=
+	Llave_L BLOQUE_STRUCT_2 Coma DB1 
+;
+
+DB1::=
+	BLOQUE_STRUCT_2 Coma DB1
+	| BLOQUE_STRUCT_2 Llave_R {:lstComponente.add(compR);  compR= new Componente();  :}
+
+;
+
+BLOQUE_STRUCT_2::=
+	Comilla ID Comilla DosP Comilla Allids:id Comilla 					{: compR.setId(id.toString()); :}
+	| Comilla NombreCampo Comilla DosP Comilla EXP_user_pass:nom Comilla {:compR.setNombreCampo(nom.toString()); :}
+	| Comilla Formulario Comilla DosP Comilla Allids:idform Comilla     {:compR.setFormulario(idform.toString()); :}
+	| Comilla Clase Comilla DosP Comilla CLASESCOMPONENTES:cCom Comilla {:compR.setClase(cCom.toString()); :}
+	| Comilla TextoVisible Comilla DosP Comilla TEXTOS:txtts Comilla 	{:compR.setTextoVisible(txtts.toString()); :}
+	| Comilla Alineacion Comilla DosP Comilla ALINEACIONES:ali Comilla  {:compR.setAlineacion(ali.toString()); :}
+	| Comilla Indice Comilla DosP Comilla Numeros:indi Comilla			{:compR.setIndice(Integer.parseInt(indi.toString().trim())); :}
+	| Comilla Requerido Comilla DosP Comilla REQUERIDO:req Comilla		{:compR.setRequerido(req.toString()); :}
+	| Comilla Opciones Comilla DosP Comilla TEXTOS:tst Comilla			{:compR.setOpciones(tst.toString()); :}
+	| Comilla Filas Comilla DosP Comilla Numeros:fil Comilla 			{:compR.setFilas(Integer.parseInt(fil.toString().trim())); :}
+	| Comilla Columnas Comilla DosP Comilla Numeros:col Comilla 		{:compR.setColumnas(Integer.parseInt(col.toString().trim())); :}
+	| Comilla Url Comilla DosP Comilla DirURL:rl Comilla 				{:compR.setUrl(rl.toString());:}
+;
+CLASESCOMPONENTES::=
+	CampoTexto:c {:RESULT=c;:}
+	| AreaTexto:ar {:RESULT=ar;:}
+	| Checkbox:ch {:RESULT=ch;:}
+	| Radio:rd {:RESULT=rd;:}
+	| Fichero:fch {:RESULT=fch;:}
+	| Imagen:img {:RESULT=img;:}
+	| Combo:cmb {:RESULT=cmb;:}
+	| Boton:btn {:RESULT=btn;:}
+;
+REQUERIDO::=
+	Si:s {: RESULT=s;:}
+	| No:n {: RESULT=n;:}
+;
+ALINEACIONES::=
+	Centro:c {: RESULT=c;:}
+	| Izquierda:i {: RESULT=i;:}
+	| Derecha:d {: RESULT=d;:}
+	| Justificar:j {: RESULT=j;:}
+;
+TEMAS::=
+	TDark:d {: RESULT=d;:}
+	| TBlue:b {: RESULT=b;:}
+	| TWhite:w {: RESULT=w;:}
+;
+TEXTOS::=
+	Textos:t {: RESULT=t;:}
+	| EXP_user_pass:w {: RESULT=w;:}
+;
+
+/*ALGUN DIA SERE INGE :')*/

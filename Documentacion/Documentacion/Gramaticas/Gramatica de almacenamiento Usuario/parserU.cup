@@ -1,0 +1,97 @@
+/*JAMES GRAMAJO COMPILADORES1 201731172*/
+package AnalizadorUsuario;
+import java_cup.runtime.Symbol;
+import java_cup.runtime.XMLElement;
+import java.util.ArrayList;
+import FormSolicitudIndigo.*;
+import ComponentesIndigo.*;
+import UsuarioIndigo.*;
+class parserU;
+parser code
+{:	
+	Formulario formR= new Formulario();
+	Componente compR= new Componente();
+	public CrearUsuario objCrearUsuario= new CrearUsuario();
+	ArrayList<Formulario> lstFormulario = new ArrayList<Formulario>();
+	ArrayList<CrearUsuario> lst = new ArrayList<CrearUsuario>();
+	ArrayList<Componente>  lstComponente = new ArrayList<Componente>();
+
+	//constructor
+	private Symbol sym;
+    int contCreaUser=0;
+    public Symbol getS(){
+        return this.sym;
+    }
+	public parserU( LexerU lex){
+	 super(lex);
+	}
+	public void report_error(String message, Object info){
+		System.out.println("\nREPORT ERROR");
+	}
+	public void report_fatal_error(String message, Object info){
+		System.out.println("\nREPORT FATAL");
+	}
+	
+	public void syntax_error(Symbol cur_token) {
+        System.out.println(symbl_name_from_id(expected_token_ids().get(0)));
+        System.out.println("syntaxerr: " + symbl_name_from_id(cur_token.sym) +" Columna: "+cur_token.right+" Linea: "+cur_token.left+" Valor:"+cur_token.value);
+    }
+	protected int error_sync_size() {
+        return 1;
+    }
+	public ArrayList<Formulario> getLstFormulario() {
+        return lstFormulario;
+    }
+	public ArrayList<CrearUsuario> getUsuarios() {
+        return lst;
+    }
+
+:};
+//Llave_a, Llave_c, Corchete_a, Corchete_c, P_coma,Identificador,Igual
+
+terminal DipleL, DipleR, Exclamation, IniSolicitudes, FinSolicitudes, IniSolicitud, FinSolicitud,
+Parentesis_L, Parentesis_R, Corchete_L, Corchete_R, Llave_L, Llave_R, Separador,
+DosP, Coma, Comilla, CredencialUser, CrearUsuario, Usuario, Password, ModificarUser, UserAntiguo,
+UserNuevo, FechaModif, EliminarUsuario, Login, NuevoPassword, FechaF;
+
+terminal ParametroForm, NuevoFormulario, ID, TituloForm, NombreForm, TemaForm, UserCreacion, FechaCreacion, EliminarForm, ModificarForm, 
+TDark, TBlue, TWhite;
+
+terminal Allids, Numeros, Letras;
+
+terminal ParametrosComponente, AgregarComponente, EliminarComponente, ModificarComponente, NombreCampo, Formulario, Clase, CampoTexto, AreaTexto, Checkbox, Radio , Fichero, Imagen, 
+Combo, Boton, Indice, TextoVisible, Alineacion, Centro, Izquierda, Derecha, Justificar, Requerido, Si, No, Opciones, Filas, Columnas, Url;
+terminal InicioGuardaForm, IdFormulario, Estructura, DatosRecopilados, EXP_user_pass, Textos, DirURL;
+/* No terminales */	 
+non terminal ESTADO_INICIAL;
+
+non terminal TEMAS, CLASESCOMPONENTES, REQUERIDO; 
+
+non terminal  ALINEACIONES;
+non terminal  DB_Form, BLOQUE_DB, STRUCT, BLOQUE_STRUCT, BLOQUE_STRUCT_2, DB1, BS_TEMP, TEXTOS;
+/*donde se inician las instrucciones*/
+start with ESTADO_INICIAL;
+
+ESTADO_INICIAL::=
+	DB_Form
+;
+DB_Form::=
+
+Llave_L BLOQUE_DB Llave_R Coma DB_Form 
+| Llave_L BLOQUE_DB Llave_R 
+
+;
+BLOQUE_DB::=
+	  Comilla Usuario Comilla DosP Comilla EXP_user_pass:aa Comilla Coma {:objCrearUsuario.setUsuario(aa.toString());:}
+	  Comilla Password Comilla DosP Comilla EXP_user_pass:a Comilla Coma {:objCrearUsuario.setPassword(a.toString());:}
+	  Comilla FechaCreacion Comilla DosP Comilla FechaF:f  Comilla  {:objCrearUsuario.setFechaCreacion(f.toString());:}
+	  {: lst.add(objCrearUsuario);  objCrearUsuario= new CrearUsuario(); :}
+
+;
+
+TEXTOS::=
+	Textos:t {: RESULT=t;:}
+	| EXP_user_pass:w {: RESULT=w;:}
+;
+
+/*ALGUN DIA SERE INGE :')*/
