@@ -6,13 +6,15 @@
 
 package UsuarioIndigo;
 
+import java.io.Serializable;
+
 
 
 /**
  * 
  * @author James
  */
-public class CrearUsuario extends Usuario {
+public class CrearUsuario extends Usuario implements Serializable{
     private String usuario;
     private String password;
 

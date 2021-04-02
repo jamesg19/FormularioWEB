@@ -36,15 +36,42 @@ public class AnalizaIndigo implements Serializable {
             usuarios=parser.getLstUsuario();
             formularios=parser.getLstFormulario();
             componentes=parser.getLstComponente();
-            
+            //obtiene los errores sintacticos
             sintacticoLST=parser.getSintacticoERROR();
-            lexicoLST=new LexerCup(new StringReader(cod)).getLexicoERROR();
+            //obtiene lo serrores lexicos
+            //lexicoLST=new LexerCup(new StringReader(cod)).getLexicoERROR();
+            lexicoLST=lexico.getLexicoERROR();
+            //SI NO HAY ERRORES LEXICOS Y SINTACTICOS
+            if(lexicoLST.isEmpty()&&sintacticoLST.isEmpty()){
+                
+            
             Verificar semantico= new Verificar(usuarios,formularios,componentes);
             semantico.AnalisisUsuarios();
+            //analiza los formularios
+
+            //CREAR FORMULARIOS
             semantico.AnalisisFormularios();
+            //analiza los componentes
+            //CREAR COMPONENTES
             semantico.AnalisisComponentes();
+            //verifica si hay errores semanticos
+                System.out.println("HAY ERRORES");
             semantico.HayErrores();
+            //guarda los USUARIOS A CREAR
+            System.out.println("GUARDA USUARIOS");
+            semantico.guardarUsuarios();
+            //elimina los usuarios
+            System.out.println("ELIMINA USUARIOS");
+            semantico.eliminarUsuarios();
+            //modifica usuarios
+            System.out.println("MODIFICA USUARIOS ");
+            semantico.modificarUsuarios();
+            //elimina formularios
+            System.out.println("ELIMINA FORMULARIOS");
+            semantico.eliminarFormularios();
+            System.out.println("ELIMINA FORMULARIOS");
             
+            }
             //System.out.println(parser.getSintacticoERROR().size()+"NUMERO TOTAL");
             } catch(Exception ex){
 

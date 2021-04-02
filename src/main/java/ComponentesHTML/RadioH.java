@@ -23,17 +23,14 @@ public class RadioH {
         this.Alineacion=Alineacion;
         this.Formulario=Formulario;
         this.NombreCampo=NombreCampo;
-        FORMATO="<br>\n<br>\n"
-                + "<label class=\"custom-control-label\" for=\""+getId()+"\">"+getTextoVisible()+"</label>\n"
-            + "<div class=\"custom-control custom-radio\" "+getRequerido()+" align=\""+getAlineacion()+" \"> \n"
-            + "";
+        
         if(Requerido.trim().equalsIgnoreCase("SI")){
             setRequerido("Required");
         }else{
             setRequerido(" ");
         }
         if(Alineacion.trim().equalsIgnoreCase("CENTRO")){
-            setAlineacion("Center");
+            setAlineacion("center");
         } else if(Alineacion.trim().equalsIgnoreCase("IZQUIERDA")){
             setAlineacion("left");
         } else if(Alineacion.trim().equalsIgnoreCase("DERECHA")){
@@ -41,6 +38,11 @@ public class RadioH {
         } else if(Alineacion.trim().equalsIgnoreCase("JUSTIFICAR")){
             setAlineacion("center");
         }
+        FORMATO="<br>\n<br>\n"
+                + "<div align=\""+getAlineacion()+" \">"
+                + "<label align=\""+getAlineacion()+"\" class=\"custom-control-label\" for=\""+getNombreCampo()+"\">"+getTextoVisible()+"</label>\n"
+            + "<div class=\"custom-control custom-radio\" "+getRequerido()+" align=\""+getAlineacion()+" \"> \n"
+            + "";
         if(Opciones.contains("|")){
             String separador = Pattern.quote("|");
             parts = Opciones.split(separador);
@@ -55,17 +57,20 @@ public class RadioH {
     
     public void GeneraRadioBtn(String [] partesOpciones){
         for(int i=0; i<parts.length;i++){
-        FORMATO+="<input type=\"radio\" id=\""+Id+i+"\" name=\""+Id+i+"\" class=\"custom-control-input\">\n" +
-        "<label class=\"custom-control-label\" for=\""+Id+i+"\">"+partesOpciones[i]+"</label>\n";
+            if(partesOpciones[i]!=null){
+        FORMATO+=""
+                + "<input  type=\"radio\" id=\""+getNombreCampo()+i+"\" name=\""+getNombreCampo()+i+"\" class=\"custom-control-input\">\n" +
+        "<label class=\"custom-control-label\" for=\""+getNombreCampo()+i+"\">"+partesOpciones[i]+"</label>\n";
         }
-        FORMATO+="</div>\n";
+        }
+        FORMATO+="</div>\n</div>";
     }
     public void GeneraRadioBtn1(String [] partesOpciones){
         
-        FORMATO+="<input type=\"radio\" id=\""+Id+0+"\" name=\""+Id+0+"\" class=\"custom-control-input\">\n" +
-        "<label class=\"custom-control-label\" for=\""+Id+0+"\">"+partesOpciones[0]+"</label>\n";
+        FORMATO+="<input  type=\"radio\" id=\""+getNombreCampo()+0+"\" name=\""+getNombreCampo()+0+"\" class=\"custom-control-input\">\n" +
+        "<label class=\"custom-control-label\" align=\""+getAlineacion()+"\" for=\""+getNombreCampo()+0+"\">"+partesOpciones[0]+"</label>\n";
         
-        FORMATO+="</div>\n";
+        FORMATO+="</div>\n</div>";
     }
     public String getTextoVisible() {
         return TextoVisible;

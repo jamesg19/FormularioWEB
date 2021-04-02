@@ -40,22 +40,22 @@ public class CampoTextoH {
         
     }
     public void AlineaCentro(){
-        FORMATO="<br><div align=\""+getAlineacion()+"\"><label for=\""+getId()+"\">"+getTextoVisible()+"</label>\n<br>\n "
+        FORMATO="<br><div align=\""+getAlineacion()+"\"><label for=\""+getNombreCampo()+"\">"+getTextoVisible()+"</label>\n<br>\n "
             +   "<div align=\""+getAlineacion()+"\" class=\"row\">"
                 + "<div align=\""+getAlineacion()+"\" class=\"col\"></div>\n" +
                 "<div align=\""+getAlineacion()+"\" class=\"col\">"
-                + "<input align=\""+getAlineacion()+"\" type=\"text\" class=\"form-control\" id=\""+getId()+"\" name=\""+getId()+"\""+getRequerido()+"/>\n"
+                + "<input align=\""+getAlineacion()+"\" type=\"text\" class=\"form-control\" id=\""+getNombreCampo()+"\" name=\""+getNombreCampo()+"\""+getRequerido()+"/>\n"
                 + "</div>"
                 + "<div align=\""+getAlineacion()+"\" class=\"col\"></div>\n"
                 + "</div>\n"
                 + "</div><br>\n";
     }
     public void AlineaDerecha(){
-        FORMATO="<br><div align=\""+getAlineacion()+"\"><label for=\""+getId()+"\">"+getTextoVisible()+"</label>\n<br>\n "
+        FORMATO="<br><div align=\""+getAlineacion()+"\"><label for=\""+getNombreCampo()+"\">"+getTextoVisible()+"</label>\n<br>\n "
             +   "<div align=\""+getAlineacion()+"\" class=\"row\">"
                 + "<div align=\""+getAlineacion()+"\" class=\"col\"></div><div align=\""+getAlineacion()+"\" class=\"col\"></div>\n" +
                 "<div align=\""+getAlineacion()+"\" class=\"col\">"
-                + "<input align=\""+getAlineacion()+"\" type=\"text\" class=\"form-control\" id=\""+getId()+"\" name=\""+getId()+"\""+getRequerido()+"/>\n"
+                + "<input align=\""+getAlineacion()+"\" type=\"text\" class=\"form-control\" id=\""+getNombreCampo()+"\" name=\""+getNombreCampo()+"\""+getRequerido()+"/>\n"
                 + "</div>"
                 + "\n"
                 + "</div>\n"
@@ -63,11 +63,11 @@ public class CampoTextoH {
         
     }
     public void AlineaIzquierda(){
-        FORMATO="<br><div align=\""+getAlineacion()+"\"><label for=\""+getId()+"\">"+getTextoVisible()+"</label>\n<br>\n "
+        FORMATO="<br><div align=\""+getAlineacion()+"\"><label for=\""+getNombreCampo()+"\">"+getTextoVisible()+"</label>\n<br>\n "
             +   "<div align=\""+getAlineacion()+"\" class=\"row\">"
                 + "" +
                 "<div align=\""+getAlineacion()+"\" class=\"col\">"
-                + "<input align=\""+getAlineacion()+"\" type=\"text\" class=\"form-control\" id=\""+getId()+"\" name=\""+getId()+"\""+getRequerido()+"/>\n"
+                + "<input align=\""+getAlineacion()+"\" type=\"text\" class=\"form-control\" id=\""+getNombreCampo()+"\" name=\""+getNombreCampo()+"\""+getRequerido()+"/>\n"
                 + "</div>"
                 + "<div align=\""+getAlineacion()+"\" class=\"col\"></div><div align=\""+getAlineacion()+"\" class=\"col\"></div>\n"
                 + "</div>\n"
@@ -75,11 +75,11 @@ public class CampoTextoH {
         
     }
     public void AlineaJustificar(){
-        FORMATO="<br><div align=\""+getAlineacion()+"\"><label for=\""+getId()+"\">"+getTextoVisible()+"</label>\n<br>\n "
+        FORMATO="<br><div align=\""+getAlineacion()+"\"><label for=\""+getNombreCampo()+"\">"+getTextoVisible()+"</label>\n<br>\n "
             +   "<div align=\""+getAlineacion()+"\" class=\"row\">"
                 + "" +
                 "<div align=\""+getAlineacion()+"\" class=\"col\">"
-                + "<input align=\""+getAlineacion()+"\" type=\"text\" class=\"form-control\" id=\""+getId()+"\" name=\""+getId()+"\""+getRequerido()+"/>\n"
+                + "<input align=\""+getAlineacion()+"\" type=\"text\" class=\"form-control\" id=\""+getNombreCampo()+"\" name=\""+getNombreCampo()+"\""+getRequerido()+"/>\n"
                 + "</div>"
                 + ""
                 + "</div>\n"
@@ -124,6 +124,22 @@ public class CampoTextoH {
 
     public void setAlineacion(String Alineacion) {
         this.Alineacion = Alineacion;
+    }
+
+    public String getNombreCampo() {
+        return NombreCampo;
+    }
+
+    public void setNombreCampo(String NombreCampo) {
+        this.NombreCampo = NombreCampo;
+    }
+
+    public String getFormulario() {
+        return Formulario;
+    }
+
+    public void setFormulario(String Formulario) {
+        this.Formulario = Formulario;
     }
     
     

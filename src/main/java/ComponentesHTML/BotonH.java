@@ -50,7 +50,7 @@ public class BotonH {
     }
     public void AlineacionIzquierda(){
         FORMATO="<br>"
-                + "<div  class=\"row\">\""
+                + "<div  class=\"row\">"
                 + "<div  class=\"col\">"
                 + "<button align=\""+getAlineacion()+"\" id=\""+Id+"\" name=\""+Id+"\" type=\"button\" class=\""+TemaB+"\">"+getTextoVisible()+"</button> "
                 + "</div>"
@@ -60,7 +60,7 @@ public class BotonH {
     }
     public void AlineacionDerecha(){
         FORMATO="<br>"
-                + "<div  class=\"row\">\""
+                + "<div  class=\"row\">"
                 + "<div align=\""+getAlineacion()+"\" class=\"col\"></div>"
                 + "<div  class=\"col\">"
                 + "<button align=\""+getAlineacion()+"\" id=\""+Id+"\" name=\""+Id+"\" type=\"button\" class=\""+TemaB+"\">"+getTextoVisible()+"</button> "
@@ -71,7 +71,7 @@ public class BotonH {
     }
     public void AlineacionCentro(){
         FORMATO="<br>"
-                + "<div  class=\"row\">\""
+                + "<div  class=\"row\">"
                 + ""
                 + "<div  class=\"col\">"
                 + "<button align=\""+getAlineacion()+"\" id=\""+Id+"\" name=\""+Id+"\" type=\"button\" class=\""+TemaB+"\">"+getTextoVisible()+"</button> "

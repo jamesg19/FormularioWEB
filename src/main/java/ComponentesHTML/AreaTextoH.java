@@ -68,8 +68,8 @@ public class AreaTextoH {
         setFORMATO("<br>\n"
                 + "<div  class=\"row\">"
                 + "<div  class=\"col\">"  
-                + "<label for=\""+getId()+"\">"+getTextoVisible()+"</label>\n" +
-                "<textarea id=\""+getId()+"\" rows=\""+getFilas()+"\" cols=\""+getColumnas()+"\" "+getRequerido()+" ></textarea>\n"
+                + "<label for=\""+getNombreCampo()+"\">"+getTextoVisible()+"</label>\n" +
+                "<textarea id=\""+getNombreCampo()+"\" rows=\""+getFilas()+"\" cols=\""+getColumnas()+"\" "+getRequerido()+" ></textarea>\n"
                 + "</div>\n"
                 + "<div class=\"col\"></div>"
                 + "</div>\n"
@@ -81,8 +81,8 @@ public class AreaTextoH {
                 + "<div  class=\"row\">"
                 + "<div class=\"col\"></div>"
                 + "<div class=\"col\">"  
-                + "<label for=\""+getId()+"\">"+getTextoVisible()+"</label>\n" +
-                "<textarea id=\""+getId()+"\" rows=\""+getFilas()+"\" cols=\""+getColumnas()+"\" "+getRequerido()+" ></textarea>\n"
+                + "<label for=\""+getNombreCampo()+"\">"+getTextoVisible()+"</label>\n" +
+                "<textarea id=\""+getNombreCampo()+"\" rows=\""+getFilas()+"\" cols=\""+getColumnas()+"\" "+getRequerido()+" ></textarea>\n"
                 + "</div>\n"
                 + "</div>\n"
                 + "<br>\n");
@@ -94,7 +94,7 @@ public class AreaTextoH {
                 + ""
                 + "<div  class=\"col\">"  
                 + "<label for=\""+getId()+"\">"+getTextoVisible()+"</label>\n" +
-                "<textarea id=\""+getId()+"\" rows=\""+getFilas()+"\" cols=\""+getColumnas()+"\" "+getRequerido()+" ></textarea>\n"
+                "<textarea id=\""+getNombreCampo()+"\" rows=\""+getFilas()+"\" cols=\""+getColumnas()+"\" "+getRequerido()+" ></textarea>\n"
                 + "</div>\n"
                 + "</div>\n"
                 + "<br>\n");
@@ -103,8 +103,8 @@ public class AreaTextoH {
     public void AlineacionJustificar(){
                 setFORMATO("<br>\n"
                 + "<div>"
-                + "<label for=\""+getId()+"\">"+getTextoVisible()+"</label>\n" +
-                "<textarea id=\""+getId()+"\" rows=\""+getFilas()+"\" cols=\""+getColumnas()+"\" "+getRequerido()+" ></textarea>\n"
+                + "<label for=\""+getNombreCampo()+"\">"+getTextoVisible()+"</label>\n" +
+                "<textarea id=\""+getNombreCampo()+"\" rows=\""+getFilas()+"\" cols=\""+getColumnas()+"\" "+getRequerido()+" ></textarea>\n"
                 + "</div>\n"
                 + "<br>\n");
         

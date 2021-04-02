@@ -25,12 +25,19 @@ public class Verificar {
     ArrayList<Componente> componentes;
     private ArrayList<String> lstErrSementico = new ArrayList<String>();
     private ArrayList<String> lstIDFORM = new ArrayList<String>();
+    private ArrayList<String> INFO = new ArrayList<String>();
     //CREAR
     ArrayList<NuevoForm> Form_a_Crear = new ArrayList<NuevoForm>();
     ArrayList<AgregarComponente> Comp_Crear = new ArrayList<AgregarComponente>();
+    ArrayList<CrearUsuario> user_Crear = new ArrayList<CrearUsuario>();
+    ArrayList<ModificarUsuario> user_Modif = new ArrayList<ModificarUsuario>();
+    ArrayList<EliminarUsuario> user_Delete = new ArrayList<EliminarUsuario>();
+    ArrayList<EliminarForm> form_Delete = new ArrayList<EliminarForm>();
+    ArrayList<ModificarForm> form_Modif = new ArrayList<ModificarForm>();
     
     
-    String usuarioLogueado;
+    
+    String usuarioLogueado="JAMES";
     String timeStamp = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
     public Verificar(ArrayList<Usuario> usuarios, ArrayList<Formulario> formularios, ArrayList<Componente> componentes) {
         this.usuarios = usuarios;
@@ -44,9 +51,13 @@ public class Verificar {
             //CREAR USUARIO
             if (usuarios.get(i) instanceof CrearUsuario) {
                 CrearUsuario crearU = (CrearUsuario) usuarios.get(i);
-                if(!crearU.getUsuario().equals(null)&& !crearU.getPassword().equals(null)){
+                if(crearU.getUsuario()!=null&& crearU.getPassword()!=null){
                     System.out.println(crearU.getUsuario());
                     System.out.println(crearU.getPassword());
+                    if(crearU.getFechaCreacion()==null){
+                        crearU.setFechaCreacion(timeStamp);
+                    }
+                    user_Crear.add(crearU);
                 }else{
                     lstErrSementico.add("NO SE AGREGARON PARAMETROS OBLIGATORIOS EN CREACION DE USUARIO ");
                     //NO SE AGREGARON LOS PARAMETROS OBLIGATORIOS
@@ -68,7 +79,7 @@ public class Verificar {
                     } else {
                         System.out.println("fecha2" + modifs.getFechaModif());
                     }
-
+                    user_Modif.add(modifs);
                 } else {
                     //NO SE ESTABLECIERON LOS PARAMETROS OBLIGATORIOS
                     lstErrSementico.add("NO SE AGREGARON PARAMETROS OBLIGATORIOS EN MODIFICAR USUARIO(NUEVO USUARIO, ANTIGUO USUARIO, NUEVO PASSWORD ) ");
@@ -80,6 +91,7 @@ public class Verificar {
             else if (usuarios.get(i) instanceof EliminarUsuario) {
                 EliminarUsuario elimU = (EliminarUsuario) usuarios.get(i);
                 System.out.println(elimU.getUsuario());
+                user_Delete.add(elimU);
             }
         }
     }
@@ -89,42 +101,42 @@ public class Verificar {
         for (int i = 0; i < formularios.size(); i++) {
             if (formularios.get(i) instanceof NuevoForm) {
                 NuevoForm nForm = (NuevoForm) formularios.get(i);
-                if(nForm.getId()!=null && nForm.getTitulo()!=null &&nForm.getNombre()!=null &&nForm.getTema()!=null){
-                  //NuevoForm newF = (NuevoForm) formularios.get(i);
-                System.out.println(nForm.getId());
-                System.out.println(nForm.getTitulo());
-                System.out.println(nForm.getNombre());
-                System.out.println(nForm.getTema());
+                if (nForm.getId() != null && nForm.getTitulo() != null && nForm.getNombre() != null && nForm.getTema() != null) {
+                    //NuevoForm newF = (NuevoForm) formularios.get(i);
+                    System.out.println(nForm.getId());
+                    System.out.println(nForm.getTitulo());
+                    System.out.println(nForm.getNombre());
+                    System.out.println(nForm.getTema());
 
-                if (nForm.getUsuarioCreacion() == null) {
-                    nForm.setUsuarioCreacion(usuarioLogueado);
-                }
-                if(lstIDFORM.contains(nForm.getId())){
-                    lstErrSementico.add("EL ID DEL FORMULARIO SE REPITE: "+nForm.getId());
-                } else{
-                    lstIDFORM.add(nForm.getId());
-                }
-                System.out.println(nForm.getUsuarioCreacion());
+                    if (nForm.getUsuarioCreacion() == null) {
+                        nForm.setUsuarioCreacion(usuarioLogueado);
+                    }
+                    if (lstIDFORM.contains(nForm.getId())) {
+                        lstErrSementico.add("EL ID DEL FORMULARIO SE REPITE: " + nForm.getId());
+                    } else {
+                        lstIDFORM.add(nForm.getId());
+                    }
+                    System.out.println(nForm.getUsuarioCreacion());
 
-                if (nForm.getFechaCreacion() == null) {
-                    //String timeStamp = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
-                    nForm.setFechaCreacion(timeStamp);
-                }else{
-                    System.out.println(nForm.getFechaCreacion());
-                }
+                    if (nForm.getFechaCreacion() == null) {
+                        //String timeStamp = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
+                        nForm.setFechaCreacion(timeStamp);
+                    } else {
+                        System.out.println(nForm.getFechaCreacion());
+                    }
                     //NuevoForm(String Id, String Titulo, String Nombre, String Tema, String usuarioCreacion, String fechaCreacion);
                     Form_a_Crear.add(nForm);
-                }else{
+                } else {
                     lstErrSementico.add("NO SE AGREGARON PARAMETROS OBLIGATORIOS EN NUEVO FORMULARIO\n (Id, Titulo, Nombre, Tema)");
                 }
-                
-                
+
             }
 
 
             else if (formularios.get(i) instanceof EliminarForm) {
                 EliminarForm elimForm = (EliminarForm) formularios.get(i);
                 System.out.println(elimForm.getId());
+                form_Delete.add(elimForm);
 
             }
 
@@ -139,6 +151,7 @@ public class Verificar {
                 System.out.println(modif.getTitulo());
                 System.out.println(modif.getNombre());
                 System.out.println(modif.getTema());
+                form_Modif.add(modif);
                 }else{
                     lstErrSementico.add("NO SE AGREGARON PARAMETROS OBLIGATORIOS EN MODIFICAR FORMULARIO (Id)");
                     System.out.println("NO SE DEFINIERON PARAMETROS OBLIGATORIOS EN MODIF FORM");
@@ -353,7 +366,7 @@ public class Verificar {
                     } 
                     ////////FICHERO HTML
                     else if (AgregComp.getClase().trim().equalsIgnoreCase("FICHERO")) {
-                        if (AgregComp.getUrl()!=null && AgregComp.getFilas() == -1 && AgregComp.getColumnas() == -1 && AgregComp.getOpciones()==null) {
+                        if (AgregComp.getUrl()==null && AgregComp.getFilas() == -1 && AgregComp.getColumnas() == -1 && AgregComp.getOpciones()==null) {
                             if (AgregComp.getTextoVisible()!=null && AgregComp.getId()!=null && AgregComp.getNombreCampo()!=null && AgregComp.getFormulario()!=null) {
                                 String ali;
                                 String req;
@@ -661,7 +674,7 @@ public class Verificar {
                     } 
                     ////////FICHERO HTML
                     else if (ModifCom.getClase().trim().equalsIgnoreCase("FICHERO")) {
-                        if (ModifCom.getUrl()!=null && ModifCom.getFilas() == -1 && ModifCom.getColumnas() == -1 && ModifCom.getOpciones()==null) {
+                        if (ModifCom.getUrl()==null && ModifCom.getFilas() == -1 && ModifCom.getColumnas() == -1 && ModifCom.getOpciones()==null) {
                             if (ModifCom.getId()!=null && ModifCom.getFormulario()!=null) {
                                 String ali;
                                 String req;
@@ -920,12 +933,13 @@ public class Verificar {
                 }
 
             }
-            FORMATO_FINAL += " )"
-                    + " }\n"
-                    + "\n)";
+            FORMATO_FINAL += " \n )"
+                    + " \n }"
+                    + "\n )";
                     System.out.println("******************************");
-                    System.out.println("******************************");
-                    System.out.println("******************************");
+                    
+                    
+                    //GUARDA LOS DATOS OBTENIDOS DEL FORMULARIO Y COMPONENTES EN UN ARCHIVO .TXT CON EL FORMATO DATO
                     ReadFormSaved rd= new ReadFormSaved(Form_a_Crear.get(i).getId());
                     rd.GuardarArchivo(Form_a_Crear.get(i).getId(), FORMATO_FINAL);
                     
@@ -941,14 +955,14 @@ public class Verificar {
     
     public String FORMATO_FORM(String id, String titulo, String nombre, String tema, String user, String fecha){
         String formato="db.formularios(\n" +
-    "   {\n" +
+    "  \n { \n \n" +
     "    \"ID_FORMULARIO\": \""+id+"\",  \n" +
     "    \"TITULO\": \""+titulo+"\",\n" +
     "    \"NOMBRE\": \""+nombre+"\",\n" +
     "    \"TEMA\": \""+tema+"\",\n" +
     "    \"USUARIO_CREACION\": \""+user+"\",\n" +
     "    \"FECHA_CREACION\":\""+fecha+"\"\n"+ 
-    "      \"ESTRUCTURA\":(\n";
+    "      \"ESTRUCTURA\":\n (\n";
         return formato;
     }
     public String FORMATO_COMP_P(String N,String val){
@@ -994,6 +1008,120 @@ public class Verificar {
                     }
                             return c;
     }
+    
+    public void guardarUsuarios(){
+        ArrayList<CrearUsuario> us = new ArrayList<CrearUsuario>();
+        ArrayList<String> lstIDusuarioG = new ArrayList<String>();
+        ArrayList<CrearUsuario> listaFinal = new ArrayList<CrearUsuario>();
+        String formato="";
+        
+        ReadFormSaved lec= new ReadFormSaved("");
+        //lec.guardaUserObjt(user_Crear);
+        
+        us=lec.leerUserobj();
+        //obtengo ID de usuarios registrados
+        for(int i=0;i<us.size();i++){
+            lstIDusuarioG.add(us.get(i).getUsuario());
+        }
+        //obtengo ID de usuarios a crear
+        for(int i=0;i<user_Crear.size();i++){
+            //si los ids de los usuarios guardados coincide con los ids nuevos no se crea el usuaio
+            if(lstIDusuarioG.contains(user_Crear.get(i).getUsuario())){
+                lstErrSementico.add("Error al crear un Nuevo Usuario-- "+user_Crear.get(i).getUsuario()+" \" YA EXISTE UN USUARIO REGISTRADO CON EL MISMO ID\"");
+            }else{
+                us.add(user_Crear.get(i));
+                INFO.add("SE HA AGREGADO EL USUARIO CON ID: "+us.get(i).getUsuario());
+            }   
+        }
+        lec.guardaUserObjt(us);
+        
+        
+    }
+    public void eliminarUsuarios(){
+        
+        ArrayList<CrearUsuario> us = new ArrayList<CrearUsuario>();
+        ArrayList<String> lstIDusuarioG = new ArrayList<String>();
+        ArrayList<CrearUsuario> listaFinal = new ArrayList<CrearUsuario>();
+//        String formato="";
+        //user_Delete
+        ReadFormSaved lec= new ReadFormSaved("");
+
+        
+        us=lec.leerUserobj();
+        //obtengo ID de usuarios registrados
+        for(int i=0;i<us.size();i++){
+            lstIDusuarioG.add(us.get(i).getUsuario());
+        }
+        //obtengo ID de usuarios a crear
+        for(int i=0;i<user_Delete.size();i++){
+            
+            for(int j=0;j<us.size();j++){
+                if(user_Delete.get(i).getUsuario().equals(us.get(j).getUsuario())){
+                    INFO.add("SE HA ELIMINADO EL USUARIO CON ID: "+us.get(j).getUsuario());
+                    System.out.println("SE HA ELIMINADO EL USUARIO CON ID: "+us.get(j).getUsuario());
+                } else{
+                    listaFinal.add(us.get(j));
+                }
+            }
+  
+        }
+        lec.guardaUserObjt(listaFinal);
+        
+        
+    }
+    
+    
+    public void modificarUsuarios(){
+        try{
+        ArrayList<CrearUsuario> us = new ArrayList<CrearUsuario>();
+        ArrayList<String> lstIDusuarioG = new ArrayList<String>();
+        ArrayList<CrearUsuario> listaFinal = new ArrayList<CrearUsuario>();
+        String formato="";
+            
+        ReadFormSaved lec= new ReadFormSaved("");
+        us=lec.leerUserobj();
+        
+        //obtengo ID de usuarios registrados
+        for(int i=0;i<us.size();i++){
+            lstIDusuarioG.add(us.get(i).getUsuario());
+        }
+        System.out.println("    PASA FOR 1");
+        //obtengo ID de usuarios a modificar
+        for (int i = 0; i < user_Modif.size(); i++) {
+            System.out.println("    ENTRA FOR 2");
+            for (int j = 0; j < us.size(); j++) {
+                System.out.println("CANTIDAD DE US.SIZE:  "+us.size());
+                System.out.println("    PASA FOR 3");
+                if (us.get(j).getUsuario().equals(user_Modif.get(i).getUsuarioAnt().trim()) && !lstIDusuarioG.contains(user_Modif.get(i).getUsuarioNue().trim())) {
+                    us.get(j).setPassword(user_Modif.get(i).getNuevoPass());
+                    us.get(j).setUsuario(user_Modif.get(i).getUsuarioNue());
+                    us.get(j).setFechaModif(timeStamp);
+                    INFO.add("SE HA MODIFICADO EL USUARIO CON ID: " + us.get(i).getUsuario());
+                } else {
+                    //us.add(user_Crear.get(i));
+                    INFO.add("NO SE MODIFICO EL USUARIO CON ID: " + us.get(i).getUsuario());
+                    INFO.add("1) EL USUARIO ACTUAL NO COINCIDE CON EL USUARIO ANTIGUO O 2) EL NUEVO USUARIO YA ESTA EN USO");
+                }
+            }
+            
+
+        }
+        System.out.println("   GUARDA");
+        lec.guardaUserObjt(us);
+        } catch(Exception e){
+            System.out.println("error en MODIFICAR USUARIOS" +e);
+        }
+    }
+    public void eliminarFormularios(){
+        System.out.println("HA ENTRADO A ELIMINAR FORMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM");
+        for(int i=0;i<form_Delete.size();i++){
+            ReadFormSaved eliminar= new ReadFormSaved("");
+            INFO.add(eliminar.eliminarFicheroForm(form_Delete.get(i).getId().trim()));
+            System.out.println("SE HA ELIMINADO EL FORMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM");        
+        }
+        
+    }
+    
 
     public ArrayList<Usuario> getUsuarios() {
         return usuarios;
@@ -1026,5 +1154,14 @@ public class Verificar {
     public void setLstErrSementico(ArrayList<String> lstErrSementico) {
         this.lstErrSementico = lstErrSementico;
     }
+
+    public ArrayList<String> getINFO() {
+        return INFO;
+    }
+
+    public void setINFO(ArrayList<String> INFO) {
+        this.INFO = INFO;
+    }
+    
     
 }

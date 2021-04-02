@@ -43,28 +43,32 @@ public class ComboH {
             setAlineacion("left");
         } else if(Alineacion.trim().equalsIgnoreCase("DERECHA")){
             setAlineacion("right");
+        } else if(Alineacion.trim()==null){
+            setAlineacion("center");
         }
         FORMATO="<br>\n<div align=\""+getAlineacion()+"\" class=\"form-row align-items-center\">\n" +
     "      <div align=\""+getAlineacion()+"\" class=\"col-auto my-1\">\n" +
-    "      <label class=\"mr-sm-2\" for=\""+getId()+"\">"+getTextoVisible()+" </label>\n" +
-    "      <select class=\"custom-select mr-sm-2\" id=\""+getId()+"\" "+getRequerido()+"\n>";
+    "      <label class=\"mr-sm-2\" for=\""+getNombreCampo()+"\">"+getTextoVisible()+" </label>\n<br>\n" +
+    "      <select  class=\"custom-select mr-sm-2\" id=\""+getNombreCampo()+"\" "+getRequerido()+"\n>";
         if(Opciones.contains("|")){
             String separador = Pattern.quote("|");
             parts = Opciones.split(separador);
             GeneraCombo(parts);
         } else{
             parts[0]=Opciones;
-            parts[1]=" ";
             GeneraCombo1(parts);
         }
     }               
     public void GeneraCombo(String [] partesOpciones){
         for(int i=0; i<parts.length;i++){
+            if(partesOpciones[i]!=null){
         FORMATO+="<option value=\""+partesOpciones[i].toString().trim()+"\">"+partesOpciones[i].toString().trim()+"</option>\n";
+        }
         }
         FORMATO+="</select>\n" +
         "</div>\n" +
-        "</div>\n";
+        "</div>\n"
+                + "\n";
     }
     public void GeneraCombo1(String [] partesOpciones){
 
@@ -72,7 +76,8 @@ public class ComboH {
         
         FORMATO+="</select>\n" +
         "</div>\n" +
-        "</div>\n";
+        "</div>\n"
+                + "</div>\n";
     }
     public String getTextoVisible() {
         return TextoVisible;
@@ -116,4 +121,21 @@ public class ComboH {
     public void setFORMATO(String FORMATO) {
         this.FORMATO = FORMATO;
     }
+
+    public String getFormulario() {
+        return Formulario;
+    }
+
+    public void setFormulario(String Formulario) {
+        this.Formulario = Formulario;
+    }
+
+    public String getNombreCampo() {
+        return NombreCampo;
+    }
+
+    public void setNombreCampo(String NombreCampo) {
+        this.NombreCampo = NombreCampo;
+    }
+    
 }

@@ -30,6 +30,7 @@ public class CheckBoxH {
         this.Requerido=Requerido;
         this.Alineacion=Alineacion;
         this.Formulario=Formulario;
+        this.NombreCampo=NombreCampo;
         
         if(Requerido.trim().equalsIgnoreCase("SI")){
             setRequerido("Required");
@@ -37,7 +38,7 @@ public class CheckBoxH {
             setRequerido(" ");
         }
         if(Alineacion.trim().equalsIgnoreCase("CENTRO")){
-            setAlineacion("Center");
+            setAlineacion("center");
         } else if(Alineacion.trim().equalsIgnoreCase("IZQUIERDA")){
             setAlineacion("left");
         } else if(Alineacion.trim().equalsIgnoreCase("DERECHA")){
@@ -47,7 +48,7 @@ public class CheckBoxH {
         }
         FORMATO="<br>\n "
             + "<div class=\"custom-control custom-checkbox\" align=\""+getAlineacion()+"\" "+getRequerido()+"> \n"
-                + "<label class=\"custom-control-label\" align=\""+getAlineacion()+"\" for=\""+getId()+"\">"+getTextoVisible()+"</label>\n"
+                + "<label class=\"custom-control-label\" align=\""+getAlineacion()+"\" for=\""+getNombreCampo()+"\">"+getTextoVisible()+"</label>\n<br>\n"
                 + "";
         if(Opciones.contains("|")){
             String separador = Pattern.quote("|");
@@ -55,22 +56,25 @@ public class CheckBoxH {
             GeneraCheck(parts);
         } else{
             parts[0]=Opciones;
-            parts[1]=" ";
             GeneraCheck(parts);
         }
-        
     }
+    
     public void GeneraCheck(String [] partesOpciones){
-        for(int i=0; i<parts.length;i++){
-        FORMATO+="<input class=\"form-check-input\" type=\"checkbox\" name=\""+Id+i+" \" id=\""+Id+"-"+i+"\">\n" +
-        "  <label class=\"custom-control-label\" for=\""+Id+"-"+i+"\">"+partesOpciones[i]+"</label>\n";
+        for(int i=0; i< parts.length ;i++){
+            if(partesOpciones[i]!=null){
+        
+                FORMATO+="<label class=\"custom-control-label\" for=\""+getNombreCampo()+"-"+i+"\">"+partesOpciones[i]+"</label>\n"
+      + "<input align=\""+getAlineacion()+"\" class=\"form-check-input\" type=\"checkbox\" name=\""+getNombreCampo()+"-"+i+"\" id=\""+getNombreCampo()+"-"+i+"\">\n" +
+        "  ";
+        }
         }
         FORMATO+="</div>\n";
     }
     public void GeneraCheck1(String [] partesOpciones){
 
-        FORMATO+="<input class=\"form-check-input\" type=\"checkbox\" name=\""+Id+0+" \" id=\""+Id+"-"+0+"\">\n" +
-        "  <label class=\"custom-control-label\" for=\""+Id+"-"+0+"\">"+partesOpciones[0]+"</label>\n";
+        FORMATO+="<input align=\""+getAlineacion()+"\" class=\"form-check-input\" type=\"checkbox\" name=\""+getNombreCampo()+"-"+0+" \" id=\""+getNombreCampo()+"-"+0+"\">\n" +
+        "  <label class=\"custom-control-label\" for=\""+getNombreCampo()+"-"+0+"\">"+partesOpciones[0]+"</label>\n";
         
         FORMATO+="</div>\n";
     }

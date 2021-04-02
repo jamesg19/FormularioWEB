@@ -1,8 +1,16 @@
 package File;
 
+import UsuarioIndigo.CrearUsuario;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -16,29 +24,25 @@ public class ReadFormSaved {
     FileOutputStream salida;
     File archivo;
     String idForm="";
-    String PathFijo="C:\\Users\\james\\Documents\\NetBeansProjects\\Formularios\\src\\main\\java\\DataBase\\";
+    String PathFijo="C:\\Users\\james\\Documents\\NetBeansProjects\\Formularios\\BaseDatos\\";
     
     public ReadFormSaved(String idForm) {
         this.idForm=idForm;
-        
         //buscarFormulario();
     }
     //http://localhost/Formularios/FormGoogle?Form=aa
     public void buscarFormulario(){
         
-        String fichero=PathFijo+idForm+".txt";
+        String fichero=PathFijo+idForm+".form";
         try{
         archivo= new File(fichero);
             if (archivo.canRead()) {
-                if (archivo.getName().endsWith("txt")) {
+                
                     String documento = AbrirArchivo(archivo);
                     ContenidoArchivo=documento;
                     ExisteArchivo=true;
-                    //JOptionPane.showMessageDialog(null, ExisteArchivo);
-                } else {
-                    ExisteArchivo=false;
-                    System.out.println("archivo invalido");
-                }
+                    //JOptionPane.showMessageDialog(null, ContenidoArchivo);
+                
             } else{
                 //NO HAY ARCHIVO
                 ExisteArchivo=false;
@@ -58,6 +62,7 @@ public class ReadFormSaved {
                 char caracter = (char) a;
                 documento += caracter;
             }
+            entrada.close();
         } catch (Exception e) {
             System.out.println("error" + e);
         }
@@ -71,12 +76,13 @@ public class ReadFormSaved {
         String mensaje = null;
         boolean bandera=false;
         try {
-            File fil= new File(PathFijo+id+".txt");
+            File fil= new File(PathFijo+id+".form");
             salida = new FileOutputStream(fil);
             byte[] bytxt = documento.getBytes();
             salida.write(bytxt);
+            salida.close();
             bandera=true;
-
+            salida.close();
         } catch (Exception e) {
 
         }
@@ -84,8 +90,140 @@ public class ReadFormSaved {
         return bandera;
     }
     
+    public String eliminarFicheroForm(String id) { 
+        String R="";
+        File arch= new File(PathFijo+id+".form");
+    if (!arch.exists()) {
+        System.out.println("El archivo data no existe.");
+        R="ERROR AL ELIMINAR FORMULARIO CON ID:"+id+" NO EXISTE";
+    } else {
+        arch.delete();
+        
+        System.out.println("El archivo data fue eliminado.");
+        R="SE HA ELIMINADO EL FORMULARIO CON ID:"+id;
+    }
+    return R;
+}
+    public void buscarArchivoCliente(){
+        
+        String fichero=PathFijo+"USUARIOS"+".txt";
+        try{
+        archivo= new File(fichero);
+            if (archivo.canRead()) {
+                
+                    String documento = AbrirArchivo(archivo);
+                    ContenidoArchivo=documento;
+                    ExisteArchivo=true;
+                    //JOptionPane.showMessageDialog(null, ContenidoArchivo);
+                
+            } else{
+                //NO HAY ARCHIVO
+                ExisteArchivo=false;
+            }
+        } catch(Exception e){
+            ExisteArchivo=false;
+            
+        }
+    }
+    public boolean GuardarUsuario(String documento) {
+        String mensaje = null;
+        boolean bandera=false;
+        try {
+            File fil= new File(PathFijo+"USUARIOS.txt");
+            salida = new FileOutputStream(fil);
+            byte[] bytxt = documento.getBytes();
+            salida.write(bytxt);
+            salida.close();
+            bandera=true;
+            salida.close();
+        } catch (Exception e) {
+
+        }
+
+        return bandera;
+    }
+    //guarda la lista de objetos Usuarios
+    public void guardaUserObjt(ArrayList<CrearUsuario> user){
+        
+        
+        try {
+            ObjectOutputStream escribe_fichero= new ObjectOutputStream(new FileOutputStream(PathFijo+"USUARIOS.txt"));
+            escribe_fichero.writeObject(user);
+            escribe_fichero.close();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(ReadFormSaved.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ReadFormSaved.class.getName()).log(Level.SEVERE, null, ex);
+        }
     
     
+    }
+    public ArrayList<CrearUsuario> leerUserobj(){
+        ArrayList<CrearUsuario> usuariosGuardados = new ArrayList<CrearUsuario>();
+        CrearUsuario users;
+        try {
+            
+            ObjectInputStream recupera=new ObjectInputStream(new FileInputStream(PathFijo+"USUARIOS.txt"));
+
+            usuariosGuardados=(ArrayList<CrearUsuario>) recupera.readObject();
+            recupera.close();
+        
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(ReadFormSaved.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ReadFormSaved.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ReadFormSaved.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return usuariosGuardados;
+    }
+    public ArrayList<CrearUsuario> leerUserobjLogin(){
+        ArrayList<CrearUsuario> usuariosGuardados = new ArrayList<CrearUsuario>();
+        CrearUsuario users;
+        try {
+            
+            ObjectInputStream recupera=new ObjectInputStream(new FileInputStream(PathFijo+"USUARIOS.txt"));
+
+            usuariosGuardados=(ArrayList<CrearUsuario>) recupera.readObject();
+            recupera.close();
+        
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(ReadFormSaved.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ReadFormSaved.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ReadFormSaved.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return usuariosGuardados;
+    }
+    public void mostrarUsuarios(){
+        ArrayList<CrearUsuario> usuariosGuardados = new ArrayList<CrearUsuario>();
+        CrearUsuario users;
+        try {
+            
+            ObjectInputStream recupera=new ObjectInputStream(new FileInputStream(PathFijo+"USUARIOS.txt"));
+
+            usuariosGuardados=(ArrayList<CrearUsuario>) recupera.readObject();
+            recupera.close();
+            for(int i=0;i<usuariosGuardados.size();i++){
+                System.out.println(" USUARIOS ENONTRADO "+usuariosGuardados.get(i).getUsuario());
+                System.out.println(" PASSWORD ENONTRADO "+usuariosGuardados.get(i).getPassword());
+                
+            }
+        
+        } catch (FileNotFoundException ex) {
+            System.out.println("3\n3\n3\n3\n"+ex);
+            //Logger.getLogger(ReadFormSaved.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            System.out.println("1\n1\n1\n"+ex);
+            //Logger.getLogger(ReadFormSaved.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            System.out.println("2\n2\n2\n2\n"+ex);
+            //Logger.getLogger(ReadFormSaved.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        
+    }
     
     public String getContenidoArchivo() {
         return ContenidoArchivo;

@@ -47,6 +47,14 @@ public class ImagenH {
     public void setUrl(String Url) {
         this.Url = Url;
     }
+
+    public String getFORMATO() {
+        return FORMATO;
+    }
+
+    public void setFORMATO(String FORMATO) {
+        this.FORMATO = FORMATO;
+    }
     
     
     

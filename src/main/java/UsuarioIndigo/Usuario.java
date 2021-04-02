@@ -19,6 +19,8 @@ public class Usuario implements Serializable {
     private String usuarioNue;
     private String nuevoPass;
     private String clase;
+    private String FechaCreacion;
+    private String FechaModif;
     
     public Usuario(String usuario, String password) {
         this.usuario = usuario;
@@ -78,6 +80,22 @@ public class Usuario implements Serializable {
 
     public void setClase(String clase) {
         this.clase = clase;
+    }
+
+    public String getFechaCreacion() {
+        return FechaCreacion;
+    }
+
+    public void setFechaCreacion(String FechaCreacion) {
+        this.FechaCreacion = FechaCreacion;
+    }
+
+    public String getFechaModif() {
+        return FechaModif;
+    }
+
+    public void setFechaModif(String FechaModif) {
+        this.FechaModif = FechaModif;
     }
     
     
