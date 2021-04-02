@@ -76,9 +76,13 @@ public class AnalizaIndigo implements Serializable {
             //modifica usuarios
             semantico.ModifUser();
 
-            //semantico.modificarUsuarios();
+            semantico.ModificarFormulario();
             //elimina formularios
             semantico.eliminarFormularios();
+            //modifica componentes
+            semantico.modificarComponente();
+            //elimina componentes
+            semantico.eliminarComponente();
 
             
             

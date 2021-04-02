@@ -257,6 +257,9 @@ public class ReadFormSaved {
 
         return bandera;
     }
+    public void ExisteForm(){
+        
+    }
 
     public String getContenidoArchivo() {
         return ContenidoArchivo;

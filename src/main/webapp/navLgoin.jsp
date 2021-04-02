@@ -19,6 +19,14 @@
 </head>
 
 <body>
+    <%@ page import="com.mycompany.formularios.*" %>
+        <%
+            String id="  ";  
+            try {
+                id = (String) request.getAttribute("id");     
+            }catch(Exception e){  
+            }
+        %>
     <nav class="navbar navbar-light navbar-expand-md navigation-clean navbar-inverse navbar-fixed-top">
         <div class="container">
             <div><a class="navbar-brand" style="padding:0px;margin-left:0px;height:78px;" href="#"> <img class="img-fluid" src="Resources/img/expansion.png"></a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button></div>
@@ -26,7 +34,7 @@
                 <ul class="navbar-nav ml-auto" style="margin-top:13px;">
                     <li class="nav-item"><a class="nav-link" uk-scroll="offset:50" >James Forms LLC.</a></li>
                     <li class="nav-item"><a class="nav-link" uk-scroll="offset:100" >Bienvenido a</a></li>
-                    <li class="nav-item"><a class="nav-link" uk-scroll="offset:100" >Formularios</a></li>
+                    <li class="nav-item"><a class="nav-link" uk-scroll="offset:100" target="_blank" href="Export?id=<%=mensaje%>" >Formularioss</a></li>
                     <li class="nav-item"><a class="nav-link" uk-scroll="offset:50" >Compiladores 1 2021</a></li>
                 </ul>
             </div>

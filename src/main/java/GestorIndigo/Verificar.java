@@ -5,6 +5,8 @@
  */
 package GestorIndigo;
 
+import AnalizadorDB.LexerDB;
+import AnalizadorDB.parserDB;
 import AnalizadorUsuario.LexerU;
 import AnalizadorUsuario.parserU;
 import ComponentesIndigo.*;
@@ -39,6 +41,8 @@ public class Verificar {
     ArrayList<EliminarUsuario> user_Delete = new ArrayList<EliminarUsuario>();
     ArrayList<EliminarForm> form_Delete = new ArrayList<EliminarForm>();
     ArrayList<ModificarForm> form_Modif = new ArrayList<ModificarForm>();
+    ArrayList<EliminarComponente> comp_elim = new ArrayList<EliminarComponente>();
+    ArrayList<ModificarComponente> modif_comp = new ArrayList<ModificarComponente>();
     
     
     
@@ -501,6 +505,7 @@ public class Verificar {
                                 } else {
                                     ali = " ";
                                 }
+                                modif_comp.add(ModifCom);
                                 CampoTextoH cm = new CampoTextoH(ModifCom.getTextoVisible(), ModifCom.getId(), ModifCom.getNombreCampo(), ModifCom.getFormulario(), req, ali);
                             } else {
                                 //
@@ -550,7 +555,7 @@ public class Verificar {
                                 System.out.println(ModifCom.getFilas());
                                 System.out.println(ModifCom.getColumnas());
                                 AreaTextoH area = new AreaTextoH(ModifCom.getTextoVisible(), ModifCom.getFormulario(), ModifCom.getId(), fila + "", col + "", req, ali, ModifCom.getNombreCampo());
-
+                                modif_comp.add(ModifCom);
                             } else {
                                 //NO SE ESTABLECIERON LOS PARAMETROS PRINCIPALES
                                 
@@ -588,7 +593,7 @@ public class Verificar {
                                     ali = " ";
                                 }
                                 System.out.println(ModifCom.getAlineacion());
-
+                                modif_comp.add(ModifCom);
                                 CheckBoxH ch = new CheckBoxH(ModifCom.getTextoVisible(), ModifCom.getId(), ModifCom.getFormulario(), ModifCom.getNombreCampo(), ModifCom.getOpciones(), req, ali);
                             } else {
                                 //LOS PARAMETROS OBLIGATORIOS NO ESTAN COMPLETOS
@@ -624,6 +629,7 @@ public class Verificar {
                                 } else {
                                     ali = " ";
                                 }
+                                modif_comp.add(ModifCom);
                                 System.out.println(ModifCom.getAlineacion());
                                 RadioH rd = new RadioH(ModifCom.getTextoVisible(), ModifCom.getId(), ModifCom.getFormulario(), ModifCom.getNombreCampo(), ModifCom.getOpciones(), req, ali);
 
@@ -660,6 +666,7 @@ public class Verificar {
                                 } else {
                                     ali = " ";
                                 }
+                                modif_comp.add(ModifCom);
                                 System.out.println(ModifCom.getAlineacion());
                                 ComboH cmb = new ComboH(ModifCom.getTextoVisible(), ModifCom.getId(), ModifCom.getFormulario(), ModifCom.getNombreCampo(), ModifCom.getOpciones(), req, ali);
 
@@ -699,6 +706,7 @@ public class Verificar {
                                     ali = " ";
                                 }
                                 System.out.println(ModifCom.getAlineacion());
+                                modif_comp.add(ModifCom);
 
                                 FicheroH fich = new FicheroH(ModifCom.getTextoVisible(), ModifCom.getId(), ModifCom.getFormulario(), ModifCom.getNombreCampo(), req, ali);
 
@@ -729,7 +737,7 @@ public class Verificar {
                                     ali = " ";
                                 }
                                 System.out.println(ModifCom.getAlineacion());
-                                
+                                modif_comp.add(ModifCom);
                                 ImagenH img = new ImagenH(ModifCom.getTextoVisible(), ModifCom.getId(), ModifCom.getFormulario(), ModifCom.getUrl());
 
                             } else {
@@ -756,7 +764,7 @@ public class Verificar {
                                     ali = "Blue";
                                 }
                                 System.out.println(ModifCom.getAlineacion());
-                                
+                                modif_comp.add(ModifCom);
                                 BotonH btn = new BotonH(ModifCom.getTextoVisible(), ModifCom.getId(), ModifCom.getFormulario(), ali,"Blue");
 
                             } else {
@@ -773,6 +781,30 @@ public class Verificar {
                     //NO SE DEFINIO LA CLASE ERRORRRR
                 }
             }
+            else if (componentes.get(i) instanceof EliminarComponente) {
+                EliminarComponente elimComp = (EliminarComponente) componentes.get(i);
+                if (elimComp.getClase()==null&& elimComp.getUrl()==null&&elimComp.getFilas() == -1 && elimComp.getColumnas() == -1 && elimComp.getOpciones()==null&& elimComp.getNombreCampo()==null&&elimComp.getRequerido()==null) {
+                if(elimComp.getId()!=null &&elimComp.getFormulario()!=null){
+                    comp_elim.add(elimComp);
+                }else{
+                     lstErrSementico.add("NO SE DEFINIO EL ID o Id form DEL COMPONENTE A ELIMINAR \'ELIMINAR COMPONENTE\'");
+                }
+                }else{
+                     lstErrSementico.add("SE AGREGARON PARAMETROS NO RECONOCIDOS POR \'ELIMINAR COMPONENTE\'");
+                }
+                
+                
+                
+            }
+            
+            
+            
+            
+            
+            
+            
+            
+            
         }
     }
     
@@ -814,7 +846,7 @@ public class Verificar {
                     int C = CantNulos(j);
                     int cc=0;
                     //cuenta los nulos
-
+                    
                     if(Comp_Crear.get(j).getId()!=null){
                         cc++;
                         FORMATO_FINAL+=FORMATO_COMP_P("ID",Comp_Crear.get(j).getId());
@@ -1293,6 +1325,417 @@ public class Verificar {
         
         return bandera;
     } 
+    
+    public void ModificarFormulario(){
+        ArrayList<Formulario> lstFORM = new ArrayList<Formulario>();
+        ArrayList<Componente> lstCOMP = new ArrayList<Componente>();
+        //form_Modif
+        String contenidoArchivo = "";
+        for (int i = 0; i < form_Modif.size(); i++) {
+
+            ReadFormSaved leer = new ReadFormSaved(form_Modif.get(i).getId());
+            leer.buscarFormulario();
+            if (leer.isExisteArchivo()) {
+                
+                try {
+                    contenidoArchivo = leer.getContenidoArchivo();
+                    
+                    StringReader readerr = new StringReader(contenidoArchivo);
+                    
+                    LexerDB lexico = new LexerDB(readerr);
+                    parserDB parser = new parserDB(lexico);
+                    parser.parse();
+                    //obtengo los datos del formulario
+                    lstFORM=parser.getLstFormulario();
+                    lstCOMP=parser.getLstComponente();
+
+                    if(form_Modif.get(i).getId()!=null){
+                        
+
+                    lstFORM.get(0).setId(form_Modif.get(i).getId());
+                    }
+                    if(form_Modif.get(i).getNombre()!=null){
+                        
+                    lstFORM.get(0).setNombre(form_Modif.get(i).getNombre());
+                    }
+                    if(form_Modif.get(i).getTema()!=null){
+                        
+                       lstFORM.get(0).setTema(form_Modif.get(i).getTema()); 
+                    }
+                    
+                    if(form_Modif.get(i).getTitulo()!=null){
+                       
+                        lstFORM.get(0).setTitulo(form_Modif.get(i).getTitulo());
+                    }
+                    
+
+                    
+                    //AnalisisModificacion( lstFORM, lstCOMP);
+                    
+                    
+                    GeneraArchivosModifForm( lstFORM, lstCOMP);
+                    INFO.add("SE HA MODIFICADO EL FORMULARIO CON Id: "+form_Modif.get(0).getId());
+                    System.out.println("SE HA MODIFICADO EL FORMULARIO CON Id: "+form_Modif.get(0).getId());
+                } catch (Exception ex) {
+                    Logger.getLogger(Verificar.class.getName()).log(Level.SEVERE, null, ex);
+                }
+               
+
+            }else{
+                System.out.println("EL FORMULARIO QUE SE DESEA MODIFICAR NO EXISTE");
+                INFO.add("EL FORMULARIO QUE SE DESEA MODIFICAR NO EXISTE");
+            }
+
+        } 
+    }
+
+        public void GeneraArchivosModifForm(ArrayList<Formulario> lstFORM,ArrayList<Componente> lstCOMP) {
+                                                                                                                                                                                //Comp_Crear.add(AgregComp);
+        //busca los formularios a CREAR
+        //con los componentes que le pertenecen
+        for (int i = 0; i < 1; i++) {
+            lstFORM.get(i).getId();
+            String FORMATO_FINAL = FORMATO_FORM(lstFORM.get(i).getId(), lstFORM.get(i).getTitulo(), lstFORM.get(i).getNombre(), lstFORM.get(i).getTema(), "james", lstFORM.get(i).getFechaCreacion());
+
+            int cantComponentes = 0;
+            int cantAgregados = 0;
+            cantComponentes=lstCOMP.size();
+            //System.out.println("NUMERO DE COMPONENTES: "+cantComponentes);
+//            for (int j = 0; j < lstCOMP.size(); j++) {
+//                if (lstCOMP.get(j).getFormulario().trim().equals(lstFORM.get(i).getId().trim())) {
+//                    cantComponentes++;
+//                }
+//            }
+            
+            for (int j = 0; j < lstCOMP.size(); j++) {
+
+                
+                    cantAgregados++;
+                    FORMATO_FINAL += "\n{";
+                    int C = CantNulos2(j,lstFORM,lstCOMP);
+                    int cc=0;
+                    //cuenta los nulos
+
+                    if(lstCOMP.get(j).getId()!=null){
+                        cc++;
+                        FORMATO_FINAL+=FORMATO_COMP_P("ID",lstCOMP.get(j).getId());
+                        //INFO.add("SE HA AGREGADO EL COMPONENTE: "+lstCOMP.get(j).getId()+" al FORMULARIO: "+lstCOMP.get(i).getId());
+                        if(cc==C){
+                            
+                        } else{
+                            FORMATO_FINAL+=",\n";
+                        }
+                    }   
+                    if(lstCOMP.get(j).getNombreCampo()!=null){
+                        cc++;
+                        FORMATO_FINAL+=FORMATO_COMP_P("NOMBRE_CAMPO",lstCOMP.get(j).getNombreCampo());
+                        
+                        if(cc==C){
+                            
+                        } else{
+                            FORMATO_FINAL+=",\n";
+                        }
+                    }    
+                    if(lstCOMP.get(j).getClase()!=null){
+                        cc++;
+                        FORMATO_FINAL+=FORMATO_COMP_P("CLASE",lstCOMP.get(j).getClase());
+                        if(cc==C){
+                            
+                        } else{
+                            FORMATO_FINAL+=",\n";
+                        }
+                    }
+                    cc++;
+                    FORMATO_FINAL+=FORMATO_COMP_P("INDICE",cantAgregados+"");
+                    if(cc==C){
+                            
+                        } else{
+                            FORMATO_FINAL+=",\n";
+                        }
+                    
+                    if(lstCOMP.get(j).getTextoVisible()!=null){
+                        cc++;
+                        FORMATO_FINAL+=FORMATO_COMP_P("TEXTO_VISIBLE",lstCOMP.get(j).getTextoVisible());
+                        if(cc==C){
+                            
+                        } else{
+                            FORMATO_FINAL+=",\n";
+                        }
+                    }
+                    if(lstCOMP.get(j).getAlineacion()!=null){
+                        cc++;
+                        FORMATO_FINAL+=FORMATO_COMP_P("ALINEACION",lstCOMP.get(j).getAlineacion());
+                        if(cc==C){
+                            
+                        } else{
+                            FORMATO_FINAL+=",\n";
+                        }
+                    }
+                    if(lstCOMP.get(j).getRequerido()!=null){
+                        cc++;
+                        FORMATO_FINAL+=FORMATO_COMP_P("REQUERIDO",lstCOMP.get(j).getRequerido());
+                        if(cc==C){
+                            
+                        } else{
+                            FORMATO_FINAL+=",\n";
+                        }
+                    }
+                    if(lstCOMP.get(j).getOpciones()!=null){
+                        cc++;
+
+                        FORMATO_FINAL+=FORMATO_COMP_P("OPCIONES",lstCOMP.get(j).getOpciones());
+                        if(cc==C){
+                            
+                        } else{
+                            FORMATO_FINAL+=",\n";
+                        }
+                    }
+                    if(lstCOMP.get(j).getFilas()!=-1){
+                        cc++;
+                        FORMATO_FINAL+=FORMATO_COMP_P("FILAS",lstCOMP.get(j).getFilas()+"");
+                        if(cc==C){
+                            
+                        } else{
+                            FORMATO_FINAL+=",\n";
+                        }
+                    }
+                    if(lstCOMP.get(j).getColumnas()!=-1){
+                        cc++;
+                        FORMATO_FINAL+=FORMATO_COMP_P("COLUMNAS",lstCOMP.get(j).getColumnas()+"");
+                        if(cc==C){
+                            
+                        } else{
+                            FORMATO_FINAL+=",\n";
+                        }
+                    }
+                    if(lstCOMP.get(j).getUrl()!=null){
+                        cc++;
+                        FORMATO_FINAL+=FORMATO_COMP_P("URL",lstCOMP.get(j).getUrl());
+                        if(cc==C){
+                            
+                        } else{
+                            FORMATO_FINAL+=",\n";
+                        }
+                    }
+
+                    FORMATO_FINAL += "\n}";
+                    if (cantAgregados  == cantComponentes) {
+                        
+                    } else {
+                        FORMATO_FINAL+=",";
+                    }
+ 
+                
+
+            }
+            FORMATO_FINAL += " \n )"
+                    + " \n }"
+                    + "\n )";
+                    System.out.println("******************************");
+                    
+                    //GUARDA LOS DATOS OBTENIDOS DEL FORMULARIO Y COMPONENTES EN UN ARCHIVO .TXT CON EL FORMATO DATO
+                    ReadFormSaved rd= new ReadFormSaved(lstFORM.get(i).getId());
+                    //INFO.add("SE HA MODIFICADO EL FORMULARIO: "+lstFORM.get(i).getId());
+                    rd.GuardarArchivo(lstFORM.get(i).getId(), FORMATO_FINAL);
+                    
+            
+            
+        }
+            
+       
+       //busca Agregar Componentes
+       
+       //CREA LOS USUARIOS
+       
+}
+    public int CantNulos2(int j,ArrayList<Formulario> lstFORM,ArrayList<Componente> lstCOMP){
+        int c=0;
+                            for (int k = 0; k <= 0; k++) {
+                                c++;
+                        if (lstCOMP.get(j).getId() != null) {
+                            c++;
+                        }
+                        if (lstCOMP.get(j).getNombreCampo() != null) {
+                            c++;
+                        }
+                        if (lstCOMP.get(j).getClase() != null) {
+                            c++;
+                        }
+
+                        if (lstCOMP.get(j).getTextoVisible() != null) {
+                            c++;
+                        }
+                        if (lstCOMP.get(j).getAlineacion() != null) {
+                            c++;
+                        }
+                        if (lstCOMP.get(j).getRequerido() != null) {
+                            c++;
+                        }
+                        if (lstCOMP.get(j).getOpciones() != null) {
+                            c++;
+                        }
+                        if (lstCOMP.get(j).getFilas() != -1) {
+                            c++;
+                        }
+                        if (lstCOMP.get(j).getColumnas() != -1) {
+                            c++;
+                        }
+                        if (lstCOMP.get(j).getUrl() != null) {
+                            c++;
+                        }
+                    }
+                            return c;
+    }
+    public void modificarComponente(){
+        ArrayList<Formulario> lstFORM = new ArrayList<Formulario>();
+        ArrayList<Componente> lstCOMP = new ArrayList<Componente>();
+        //form_Modif
+        String contenidoArchivo = "";
+        for (int i = 0; i < modif_comp.size(); i++) {
+
+            ReadFormSaved leer = new ReadFormSaved(modif_comp.get(i).getFormulario());
+            leer.buscarFormulario();
+            if (leer.isExisteArchivo()) {
+                
+                try {
+                    contenidoArchivo = leer.getContenidoArchivo();
+                    
+                    StringReader readerr = new StringReader(contenidoArchivo);
+                    
+                    LexerDB lexico = new LexerDB(readerr);
+                    parserDB parser = new parserDB(lexico);
+                    parser.parse();
+                    //obtengo los datos del formulario
+                    lstFORM=parser.getLstFormulario();
+                    lstCOMP=parser.getLstComponente();
+                    
+                    
+                    
+                    analisisModifComp(lstFORM,lstCOMP,i);
+                    
+                    //AnalisisModificacion( lstFORM, lstCOMP);
+                    
+                    
+//                    GeneraArchivosModifForm( lstFORM, lstCOMP);
+//                    INFO.add("SE HA MODIFICADO EL FORMULARIO CON Id: "+form_Modif.get(0).getId());
+//                    System.out.println("SE HA MODIFICADO EL FORMULARIO CON Id: "+form_Modif.get(0).getId());
+                } catch (Exception ex) {
+                    Logger.getLogger(Verificar.class.getName()).log(Level.SEVERE, null, ex);
+                }
+               
+
+            }else{
+                System.out.println("NO SE PUEDE MOFIDICAR EL COMPONENTE PORQUE NO SE ENCONTRO EL FORMULARIO");
+                INFO.add("NO SE PUEDE MOFIDICAR EL COMPONENTE PORQUE NO SE ENCONTRO EL FORMULARIO");
+            }
+
+        } 
+    }
+        public void eliminarComponente(){
+        ArrayList<Formulario> lstFORM = new ArrayList<Formulario>();
+        ArrayList<Componente> lstCOMP = new ArrayList<Componente>();
+        //form_Modif
+        String contenidoArchivo = "";
+        for (int i = 0; i < comp_elim.size(); i++) {
+
+            ReadFormSaved leer = new ReadFormSaved(comp_elim.get(i).getFormulario());
+            leer.buscarFormulario();
+            if (leer.isExisteArchivo()) {
+                
+                try {
+                    contenidoArchivo = leer.getContenidoArchivo();
+                    
+                    StringReader readerr = new StringReader(contenidoArchivo);
+                    
+                    LexerDB lexico = new LexerDB(readerr);
+                    parserDB parser = new parserDB(lexico);
+                    parser.parse();
+                    //obtengo los datos del formulario
+                    lstFORM=parser.getLstFormulario();
+                    lstCOMP=parser.getLstComponente();
+                    
+                    
+                    
+                    analisisElimComp(lstFORM,lstCOMP,i);
+                    
+                    //AnalisisModificacion( lstFORM, lstCOMP);
+                    
+                    
+//                    GeneraArchivosModifForm( lstFORM, lstCOMP);
+//                    INFO.add("SE HA MODIFICADO EL FORMULARIO CON Id: "+form_Modif.get(0).getId());
+//                    System.out.println("SE HA MODIFICADO EL FORMULARIO CON Id: "+form_Modif.get(0).getId());
+                } catch (Exception ex) {
+                    Logger.getLogger(Verificar.class.getName()).log(Level.SEVERE, null, ex);
+                }
+               
+
+            }else{
+                System.out.println("NO SE PUEDE MOFIDICAR EL COMPONENTE PORQUE NO SE ENCONTRO EL FORMULARIO");
+                INFO.add("NO SE PUEDE MOFIDICAR EL COMPONENTE PORQUE NO SE ENCONTRO EL FORMULARIO");
+            }
+
+        } 
+    }
+        public void analisisElimComp(ArrayList<Formulario> lstFORMM,ArrayList<Componente> lstCOMP, int j){
+            for(int i=0;i<lstCOMP.size();i++){
+            if(lstCOMP.get(i).getId().trim().equals(comp_elim.get(j).getId().trim())){
+                    lstCOMP.remove(i);
+                    GeneraArchivosModifForm( lstFORMM, lstCOMP);
+                    INFO.add("SE HA ELIMINADO EL COMPONENTE CON Id: "+comp_elim.get(0).getId());
+                    System.out.println("SE HA ELIMINADO EL COMPONENTE  CON Id:: "+comp_elim.get(0).getId());
+                
+            }
+            
+        }
+            
+            
+            
+        }
+    public void analisisModifComp(ArrayList<Formulario> lstFORMM,ArrayList<Componente> lstCOMP, int j){
+        
+        for(int i=0;i<lstCOMP.size();i++){
+            if(lstCOMP.get(i).getId().trim().equals(modif_comp.get(j).getId().trim())){
+                if(modif_comp.get(j).getId()!=null){
+                    lstCOMP.get(i).setId(modif_comp.get(j).getId());
+                }
+                if(modif_comp.get(j).getAlineacion()!=null){
+                    lstCOMP.get(i).setAlineacion(modif_comp.get(j).getAlineacion());
+                }
+                if(modif_comp.get(j).getClase()!=null){
+                    lstCOMP.get(i).setClase(modif_comp.get(j).getClase());
+                }
+                if(modif_comp.get(j).getColumnas()!=-1){
+                    lstCOMP.get(i).setColumnas(modif_comp.get(j).getColumnas());
+                }
+                if(modif_comp.get(j).getFilas()!=-1){
+                    lstCOMP.get(i).setFilas(modif_comp.get(j).getFilas());
+                }
+                if(modif_comp.get(j).getUrl()!=null){
+                    lstCOMP.get(i).setUrl(modif_comp.get(j).getUrl());
+                }
+                if(modif_comp.get(j).getTextoVisible()!=null){
+                    lstCOMP.get(i).setTextoVisible(modif_comp.get(j).getTextoVisible());
+                }
+                if(modif_comp.get(j).getRequerido()!=null){
+                    lstCOMP.get(i).setRequerido(modif_comp.get(j).getRequerido());
+                }
+                if(modif_comp.get(j).getOpciones()!=null){
+                    lstCOMP.get(i).setOpciones(modif_comp.get(j).getOpciones());
+                }
+                
+                    GeneraArchivosModifForm( lstFORMM, lstCOMP);
+                    INFO.add("SE HA MODIFICADO EL COMPONENTE CON Id: "+modif_comp.get(0).getId());
+                    System.out.println("SE HA MODIFICADO EL COMPONENTE  CON Id: "+modif_comp.get(0).getId());
+                
+            }
+            
+        }
+        
+    }
+    
+    
+    
+
 
     public ArrayList<Usuario> getUsuarios() {
         return usuarios;

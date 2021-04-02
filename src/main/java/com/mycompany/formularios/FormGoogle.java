@@ -82,6 +82,11 @@ private ArrayList<Componente> lstCOMP = new ArrayList<Componente>();
                 parserDB parser = new parserDB(lexico);
                 parser.parse();
                 lstFORM=parser.getLstFormulario();
+                String id=lstFORM.get(0).getId();
+                out.write("<form target=\"_blank\" action=\"Export?id="+id+"\" >"
+                        + "<input value=\""+id+"\" class=\"form-control\" type=\"hidden\" name=\"pth\">"
+                        + "<button align=\"right\" type=\"submit\" class=\"btn btn-danger\">Exportar formulario PDF</button>"
+                                + "</form>");
                 lstCOMP=parser.getLstComponente();
                 LecturaBaseDatos lec= new LecturaBaseDatos(lstFORM,lstCOMP);
                 lec.ObtenerHTML();
@@ -93,7 +98,7 @@ private ArrayList<Componente> lstCOMP = new ArrayList<Componente>();
                 Logger.getLogger(FormGoogle.class.getName()).log(Level.SEVERE, null, ex);
             }
             
-            
+
             
         }
         
